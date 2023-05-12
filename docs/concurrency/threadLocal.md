@@ -890,7 +890,7 @@ private void set(ThreadLocal<?> key, Object value) {
 
 #### 4.1.2 getEntry()
 
-4.1.3 remove()
+#### 4.1.3 remove()
 
 ```java
 private void remove(ThreadLocal<?> key) {

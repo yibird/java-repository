@@ -4,8 +4,12 @@ export default {
     collapsed: true,
     items: [
         { text: "Redis" },
-        { text: "RabbitMQ" },
-        { text: "RocketMQ" },
-        { text: "Kafka" }
+        {
+            text: "MQ", items: [
+                { text: "RabbitMQ" },
+                { text: "RocketMQ" },
+                { text: "Kafka" }
+            ]
+        }
     ]
 }

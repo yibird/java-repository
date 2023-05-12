@@ -2,13 +2,12 @@ import type { Sidebar } from '../typing'
 import Base from './base'
 import Concurrency from './concurrency'
 import Feature from './feature'
-import Spring from './spring'
-import SpringMVC from './springMVC'
-import SpringBoot from './springBoot'
+import SpringFramework from './springFramework'
 import ORM from './orm'
 import Middleware from './middleware'
 import Microservices from './microservices'
 import DB from './db'
+import BusinessFunctions from './businessFunctions'
 import CaseInterview from './caseInterview'
 
 const sidebars: Sidebar = [
@@ -16,12 +15,11 @@ const sidebars: Sidebar = [
     Concurrency,
     Feature,
     ORM,
-    Spring,
-    SpringMVC,
-    SpringBoot,
+    SpringFramework,
     Middleware,
     Microservices,
     DB,
+    BusinessFunctions,
     CaseInterview
 ]
 export default sidebars;

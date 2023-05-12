@@ -15,7 +15,25 @@ export default {
                     text: 'Collection 类关系图'
                 },
                 {
-                    text: 'Array'
+                    text: 'ArrayList'
+                },
+                {
+                    text: 'LinkedList'
+                },
+                {
+                    text: "Stack & Queue"
+                },
+                {
+                    text: "PriorityQueue"
+                },
+                {
+                    text: "HashSet & HashMap"
+                },
+                {
+                    text: "LinkedHashSet & Map"
+                },
+                {
+                    text: "TreeSet & TreeMap"
                 }
             ]
         },
@@ -68,7 +86,8 @@ export default {
             items: []
         },
         {
-            text: 'SPI机制'
+            text: 'SPI机制',
+            link: "../../base/spi.md"
         }
     ]
 }
