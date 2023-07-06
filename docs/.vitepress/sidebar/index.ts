@@ -9,6 +9,7 @@ import Microservices from "./microservices";
 import DB from "./db";
 import DesignPatterns from "./designPatterns";
 import BusinessFunctions from "./businessFunctions";
+import RefactorAndOptimize from "./refactorAndOptimize";
 import CaseInterview from "./caseInterview";
 
 const sidebars: Sidebar = [
@@ -22,6 +23,7 @@ const sidebars: Sidebar = [
   DB,
   DesignPatterns,
   BusinessFunctions,
+  RefactorAndOptimize,
   CaseInterview,
 ];
 export default sidebars;
