@@ -3,6 +3,7 @@ export default {
   collapsed: true,
   items: [
     {
+      link: "/refactorAndOptimize/multipleIf.md",
       text: "优化多重if分支",
     },
   ],
