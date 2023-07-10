@@ -3,7 +3,7 @@ layout: home
 hero:
   name: Java知识库
   text: 一个非常完备的Java知识库
-  tagline: 路漫漫其修远兮,吾将上下而求索!
+  tagline: 时间不在于你拥有多少,而在于你怎样使用
   image:
     src: /assets/img/logo.jpg
     alt: Java知识库

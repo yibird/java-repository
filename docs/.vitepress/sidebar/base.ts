@@ -63,19 +63,16 @@ export default {
       collapsed: true,
       items: [
         {
-          text: "Java IO - 分类(传输,操作)",
-        },
-        {
-          text: "Java IO常见类",
-        },
-        {
           text: "IO 模型 - Unix IO 模型",
+          link: "/base/io/unixIOModel.md",
         },
         {
           text: "BIO",
+          link: "/base/io/bio.md",
         },
         {
           text: "NIO",
+          link: "/base/io/nio.md",
         },
         {
           text: "NIO之IO多路复用",
