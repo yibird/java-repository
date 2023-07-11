@@ -80,6 +80,44 @@ export default {
         {
           text: "AIO",
         },
+        {
+          text: "Netty",
+          collapsed: true,
+          items: [
+            {
+              text: "Netty介绍",
+              link: "/base/io/netty/introduce.md",
+            },
+            {
+              text: "Netty解决TCP粘包/拆包问题",
+              link: "/base/io/netty/glueAndUnpack.md",
+            },
+            {
+              text: "Netty之编解码",
+              link: "/base/io/netty/codec.md",
+            },
+            {
+              text: "Netty之TCP协议",
+              link: "/base/io/netty/tcp.md",
+            },
+            {
+              text: "Netty之UDP协议",
+              link: "/base/io/netty/udp.md",
+            },
+            {
+              text: "Netty之Http协议",
+              link: "/base/io/netty/http.md",
+            },
+            {
+              text: "Netty之WebSocket协议",
+              link: "/base/io/netty/webSocket.md",
+            },
+            {
+              text: "Netty之自定义私有协议",
+              link: "/base/io/netty/customProtocol.md",
+            },
+          ],
+        },
       ],
     },
     {

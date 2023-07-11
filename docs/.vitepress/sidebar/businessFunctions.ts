@@ -11,8 +11,8 @@ export default {
       link: "/business/pay.md",
     },
     {
-      text: "敏感词替换",
-      link: "/business/sensitiveWordReplacement.md",
+      text: "关键词过滤",
+      link: "/business/keywordFiltering.md",
     },
   ],
 };
