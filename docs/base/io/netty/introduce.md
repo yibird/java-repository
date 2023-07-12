@@ -52,7 +52,7 @@ public class HelloServer {
          * 为了高效地处理这些任务,Netty使用不同的线程组来分离接收连接和处理 I/O 操作的任务,以此
          * 来提高服务器的并发性能。其中:
          * - bossGroup:该线程组负责接受传入的连接。它会监听服务器绑定的端口,并接受客户端的连接请求。
-         * 一旦有新的连接建立,bossGroup 将将其注册到 workerGroup 中的线程进行进一步处理。
+         * 一旦有新的连接建立,bossGroup 将其注册到 workerGroup 中的线程进行进一步处理。
          * - workerGroup:该线程组负责处理已经建立的连接的 I/O 操作。一旦连接被接受并注册到
          * workerGroup 中,workerGroup 将负责处理连接的读取和写入操作。
          */
@@ -214,7 +214,9 @@ Netty 启动步骤可以简单分为创建两个 EventLoopGroup(事件循环组)
   - workerGroup:该线程组负责处理已经建立的连接的 I/O 操作。一旦连接被接受并注册到 workerGroup 中,workerGroup 将负责处理连接的读取和写入操作。
 - 创建 ServerBootstrap 对象:ServerBootstrap 用于配置和启动服务器。serverBootstrap 使用 group()方法设置线程模型,使用 channel()方法设置通讯通道,使用 handler 用于向 ChannelPipeline 末尾添加一个新的 ChannelHandler,使用 childHandler() 方法用于向 ServerChannel 的 ChildChannelPipeline 末尾添加一个新的 ChannelHandler。
 
-  - group():group 接受 parentGroup 和 childGroup 两个 EventLoopGroup,parentGroup 负责接受传入的连接,childGroup 负责处理已经建立的连接的 I/O 操作。
+  - group():Netty 在处理事件时,提供了串行和并行两种模式:
+    - 串行模式:使用一个 EventLoop 来处理所有事件,相当于是一个线程。所有连接共用这个 EventLoop,事件将会串行地在这个线程上处理。
+    - 并行模式:使用 parentGroup 和 childGroup 两个 EventLoop 来处理事件,parentGroup 负责接受传入的连接,childGroup 负责处理已经建立的连接的 I/O 操作,每个 EventLoop 绑定一个线程。连接可以分配到不同的 EventLoop,那么这些连接的事件将会并行地在不同的线程上处理。并行模式可以利用多核 CPU 提高系统整体的吞吐量。
   - channel():Channel 是 Netty 中提供的一个抽象接口,表示一个开放的连接,可以进行数据的读取和写入。Channel 提供了多个子接口以适应不同的网络通信需求和协议,例如 SocketChannel(用于 TCP 网络套接字的 Channel 实现)、UdtChannel(用于支持 UDT 协议的通信)、DatagramChannel(用于 UDP 数据报套接字的 Channel 实现),其中 SocketChannel 最为常用,SocketChannel 提供了三个子类:
     - NioServerSocketChannel:基于 Java NIO 的 SocketChannel 实现,适用于 TCP 网络套接字。
     - OioSocketChannel:基于传统的阻塞 I/O 的 SocketChannel 实现,适用于旧版的 I/O 模型。
@@ -227,7 +229,188 @@ Netty 启动步骤可以简单分为创建两个 EventLoopGroup(事件循环组)
   - shutdownGracefully():用于优雅地关闭 Netty 的 EventLoopGroup,shutdownGracefully()会等待所有正在处理的任务完成后再关闭 EventLoopGroup,而
   - shutdownNow():用于立即关闭 Netty 的 EventLoopGroup,shutdownNow()并不会等待正在处理的任务完成。它会强制停止所有的线程,并丢弃尚未完成的任务。
 
-## Reactor 模型
+## 2.Reactor 模型
+
+Reactor 模式是一种事件驱动的异步非阻塞 I/O 模型。它用于处理大量的并发连接,在高并发网络编程中很常用。Reactor 模式主要包含以下组件:
+
+- Reactor(反应器):负责监听事件并分发事件,相当于服务端的主循环。
+- Acceptor(处理器):接收客户端连接,并创建处理器。
+- Handler(处理器):异步非阻塞地处理连接上的 IO 操作。
+
+Reactor 模式的工作流程如下:
+
+- Reactor 在一个线程中运行,监听客户端请求事件。
+- 收到事件后,Reactor 会将该事件分发给对应的 Handler。
+- Handler 在独立线程中异步处理该事件,finish 后会通知 Reactor。
+- Reactor 接受到通知后向客户端发送响应结果。
+
+Reactor 模式使得服务端能够异步非阻塞地处理大量客户端连接,充分利用多核 CPU。它是高并发网络编程的基础模型之一。Netty 框架中的 IO 线程模型也是基于 Reactor 模式实现的,这使其可以高效处理海量连接。根据 Reactor 和 Handler 的关系不同,Reactor 模式主要可以分为以下几种类型:
+
+- 单 Reactor 单线程模型。
+- 单 Reactor 多线程模型。
+- 主从多线程 Reactor 模型。
+- 多 Reactor 多线程模型。
+
+### 2.1 单 Reactor 单线程模型
+
+单 Reactor 单线程模型是 Reactor 模式最基本的模型,有一个 Reactor 和一个线程来处理所有事件。Reactor 负责监听事件,收到事件后在同一个线程 dispatch 给某个 Handler 处理。该模式虽然实现简单,但性能和并发处理能力有限。
+
+```java
+package com.fly.reactor.single;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * 单Reactor单线程模型,Reactor和Handler在同一个线程中,Reactor负责监听连接,
+ * 收到连接后在同一个线程处理请求,虽然实现简单但无法实现异步和并发处理。
+ */
+public class SingleThreadReactor {
+    /**
+     * ServerSocket用于服务端提供网络服务,它工作在传输层(TCP)并负责建立Socket连接
+     */
+    private ServerSocket serverSocket;
+
+    public SingleThreadReactor(int port) throws IOException {
+        this.serverSocket = new ServerSocket(port);
+    }
+
+    public void serve() {
+        // 如果serverSocket连接未关闭,则一直阻塞等待处理请求
+        while (!serverSocket.isClosed()) {
+            try {
+                /**
+                 * 阻塞等待会一直等待客户端连接,当接收到客户端连接请求时,会返回一个
+                 * 新的Socket实例,Socket与指定客户端建立了点对点连接,可以用来发送接收数据。
+                 * Socket与指定客户端建立了点对点连接,可以用来发送接收数据,
+                 * 可以通过设置backlog参数来配置等待连接队列的大小
+                 */
+                Socket socket = serverSocket.accept();
+                handleRequest(socket);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    void handleRequest(Socket socket) throws IOException {
+        // 从Socket(套接字)获取输入流
+        InputStream input = socket.getInputStream();
+        // 根据输入流创建一个只读输入流
+        InputStreamReader streamReader = new InputStreamReader(input, "UTF-8");
+        OutputStream output = socket.getOutputStream();
+        OutputStreamWriter streamWriter = new OutputStreamWriter(output, "UTF-8");
+        /**
+         * 根据Reader流创建缓冲区读取字符流,BufferedReader实现了缓冲读取机制,它会一次性读取大块
+         * 数据到缓冲区,然后应用可以从缓冲区获取数据,实现了读取性能的大幅提升
+         */
+        BufferedReader reader = new BufferedReader(streamReader);
+        /**
+         * readLine()用于从字符输入流中读取一行内容,如果流中没有数据,
+         * readLine()会进行阻塞等待
+         */
+        String message = reader.readLine();
+        System.out.println("message:" + message);
+        /**
+         * PrintWriter类封装了输出流,提供了格式化打印字符串的高效便捷接口,
+         * 支持所有基本数据类型、String、对象、char[]等多种数据类型输出。
+         * PrintWriter使用内部缓存区存储数据以减少写操作的次数,以此来提高性能,
+         * 并且支持自动刷新数据到Socket,无需手动flush。
+         */
+        PrintWriter writer = new PrintWriter(streamWriter, true);
+        // 向客户端写入数据
+        writer.println("Hello Client:" + message);
+        reader.close();
+        // 关闭套接字
+        socket.close();
+    }
+}
+```
+
+```java
+package com.fly.reactor.single;
+
+
+import java.io.IOException;
+
+/**
+ * 单Reactor单线程模型启动类
+ */
+public class SingleThreadReactorBootstrap {
+    public static void main(String[] args) throws IOException {
+        SingleThreadReactor reactor = new SingleThreadReactor(8888);
+        reactor.serve();
+    }
+}
+```
+
+在单 Reactor 单线程模型中,Reactor 和 Handler 在同一个线程中,Reactor 负责监听连接,收到连接后在同一个线程处理请求,虽然实现简单但无法实现异步和并发处理。
+
+### 2.2 单 Reactor 多线程模型
+
+Reactor 仍只有一个,但有多个线程来处理事件。Reactor 将请求分发给不同的 Handler,Handler 运行在不同线程上以实现并发处理。线程池可以用来管理 Handler 线程。
+
+### 2.3 主从多线程 Reactor 模型
+
+有一个主线程作为主 Reactor,其他线程作为从 Reactor。主 Reactor 负责监听连接事件,从 Reactor 负责 IO 读写。来自同一客户端的所有请求都由同一个从 Reactor 处理。
+
+### 2.4 多 Reactor 多线程模型
+
+有多个 Reactor,每个 Reactor 及其线程可以监听不同端口,或者监听同一端口的不同连接。多个 Reactor 实现任务分离,Reactor 线程负责监听,Handler 线程池负责处理 IO。
+
+### 2.5 Netty Reactor 模型
+
+Netty 提供单 Reactor 单线程、单 Reactor 多线程、主从 Reactor 多线程等线程模型:
+
+- 单 Reactor 单线程:一个 Reactor 线程负责所有的事件处理,相当于一个线程池中只有一个线程,适用于小量简单连接。在 Netty 通过 EventLoopGroup 构造方法传入 1 表示单线程模式,例如:`EventLoopGroup group = new NioEventLoopGroup(1);`。在单线程模式下 ChannelPipeline(Channel 管道链)使用一个线程处理所有 Handler,会将所有的 Handler 添加到同一个 ChannelPipeline 中,这样所有事件都在一个线程中处理。
+
+```java
+// 通过EventLoopGroup构造方法传入1表示单线程模式
+EventLoopGroup group = new NioEventLoopGroup(1);
+ServerBootstrap bootstrap = new ServerBootstrap();
+// 配置线程模型
+bootstrap.group(group);
+```
+
+- 单 Reactor 多线程:一个 Reactor 线程监听事件,但根据事件类型派发给不同的 handler 线程池进行处理,提高吞吐量。
+
+```java
+/**
+ * NioEventLoopGroup创建的线程数与以下几个参数相关:
+ * - ioRatio:IO任务和非IO任务的执行线程数比例,默认8。
+ *
+ * - 初始化线程数:NioEventLoopGroup(int nThreads)支持构造函数
+ * 指定初始化的线程数,默认是CPU核心数 * 2。
+ *
+ * - 启动时线程数:在Netty服务启动时,会调用NioEventLoopGroup的next()
+ * 方法获取下一个EventLoop来处理Channel。这个过程中会延迟创建线程,
+ * 线程数取决于处理的Channel数。
+ *
+ * - 最大线程数:通过调用setMaximumPoolSize()可以限制EventLoop的最大线程数。
+ *
+ * - 线程增长步长:在运行时可以通过步长逐渐增加线程数,防止创建过多空闲线程。
+ */
+EventLoopGroup group = new NioEventLoopGroup();
+ServerBootstrap bootstrap = new ServerBootstrap();
+// 配置线程模型为单Reactor多线程模型
+bootstrap.group(group);
+```
+
+- 主从 Reactor 多线程:一个主 Reactor 线程监听连接事件,接收新连接后分离给从 Reactor 线程处理后续 IO 事件,减少主线程负载。主从 Reactor 多线程模式也是 Netty 最常规写法。
+
+```java
+/**
+ * 创建两个EventLoopGroup,主Reactor负责接受传入的连接,用于分配给从Reactor,
+ * 从Reactor用于IO处理
+ */
+EventLoopGroup bossGroup = new NioEventLoopGroup();
+EventLoopGroup workerGroup = new NioEventLoopGroup();
+ServerBootstrap bootstrap = new ServerBootstrap();
+bootstrap.group(bossGroup, workerGroup);
+```
+
+- 主从 Reactor 多线程池:相比于主从 Reactor,从 Reactor 使用线程池而不是单线程,来处理 IO 事件,更灵活。
 
 ## ChannelHandler
 
