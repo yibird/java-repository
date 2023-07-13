@@ -89,7 +89,7 @@ export default {
               link: "/base/io/netty/introduce.md",
             },
             {
-              text: "Netty解决TCP粘包/拆包问题",
+              text: "Netty解决TCP粘包/拆包",
               link: "/base/io/netty/glueAndUnpack.md",
             },
             {
