@@ -455,6 +455,8 @@ public class FrameClient {
 - DelimiterBasedFrameDecoder:通过指定自定义的分隔符来划分消息的边界,相较于 LineBasedFrameDecoder 更加灵活,可以自定义分隔符。DelimiterBasedFrameDecoder 的构造函数接受两个参数,分别是最大允许的消息长度和一个或多个分隔符（ByteBuf 类型）。它会读取接收到的数据流,并根据指定的分隔符划分出完整的消息,然后将这些完整的消息发送给后续的处理器进行处理。DelimiterBasedFrameDecoder 默认支持 Delimiters.nulDelimiter(按照 NUL 分割)和 Delimiters.lineDelimiter(按照换行符或回车符分割)两种策略,也可以自定义分割策略,需要返回 ByteBuf[]对象。
 - StringDecoder:字符串解码器,用于将接收到的 ByteBuf 数据解码成字符串形式,方便消息的处理。
 
+LineBasedFrameDecoder 工作原理:LineBasedFrameDecoder 依次遍历上一个 Handler 处理的 ByteBuf 中的可读字节,判断 ByteBuf 中是否包含`\n`或`\r\n`,如果存在则以该位置作为结束位置,从可读索引到结束位置区间的字节就是一个数据包。LineBasedFrameDecoder 是以换行符为结束标志的解码器,支持携带结束符或不携带结束符两种编码方式,同时支持配置单行的最大长度。如果连续读取 ByteBuf 到最大长度扔没有发现换行符,就会抛出异常,同时忽略之前读到的字节。
+
 ```java
 package com.fly.tcp.pack.separator;
 
