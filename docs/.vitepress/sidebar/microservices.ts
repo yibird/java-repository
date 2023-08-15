@@ -61,6 +61,10 @@ export default {
           link: "",
         },
         {
+          text: "分布式锁",
+          link: "/microservices/solution/distributedLock.md",
+        },
+        {
           text: "分布式调度",
           link: "",
         },

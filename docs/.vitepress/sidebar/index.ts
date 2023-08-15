@@ -9,6 +9,7 @@ import Microservices from "./microservices";
 import DB from "./db";
 import DesignPatterns from "./designPatterns";
 import BusinessFunctions from "./businessFunctions";
+import Containerization from './containerization'
 import RefactorAndOptimize from "./refactorAndOptimize";
 import CaseInterview from "./caseInterview";
 
@@ -23,6 +24,7 @@ const sidebars: Sidebar = [
   DB,
   DesignPatterns,
   BusinessFunctions,
+  Containerization,
   RefactorAndOptimize,
   CaseInterview,
 ];

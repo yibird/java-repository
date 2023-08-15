@@ -114,7 +114,44 @@ export default {
     },
     {
       text: "MQ",
-      items: [{ text: "RabbitMQ" }, { text: "RocketMQ" }, { text: "Kafka" }],
+      collapsed: true,
+      items: [{
+        text: "RabbitMQ",
+        collapsed: true,
+        items: [
+          {
+            text: "初识RabbitMQ及核心概念",
+            link: ""
+          },
+          {
+            text: "RabbitMQ Cluster(集群)",
+            link: ""
+          },
+          {
+            text: "RabbitMQ最佳实践",
+            link: ""
+          }
+        ]
+      }, {
+        text: "RocketMQ",
+        collapsed: true,
+        items: [
+          {
+            text: "初识RocketMQ及核心概念",
+            link: ""
+          },
+        ]
+      },
+      {
+        text: "Kafka",
+        collapsed: true,
+        items: [
+          {
+            text: "初识Kafka及核心概念",
+            link: ""
+          },
+        ]
+      }],
     },
     {
       text: "Web服务器",

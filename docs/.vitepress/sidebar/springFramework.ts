@@ -82,30 +82,89 @@ export default {
               link: "/springFramework/springBoot/base/taskScheduling.md",
             },
             {
-              text: "SpringBoot原理",
+              text: "SpringBoot自动装配原理",
               link: "/springFramework/springBoot/base/principle.md",
             },
           ],
         },
         {
           text: "数据访问篇",
-          items: [],
+          collapsed: true,
+          items: [
+            {
+              text: "SpringBoot集成MybatisPlus",
+              link: "/springFramework/springBoot/dataAccess/mybatisPlus.md",
+            },
+            {
+              text: "SpringBoot集成Jpa",
+              link: "/springFramework/springBoot/dataAccess/jpa.md",
+            },
+          ],
         },
         {
           text: "日志篇",
-          items: [],
+          collapsed: true,
+          items: [
+            {
+              text: "SpringBoot集成Logback",
+              link: "/springFramework/springBoot/logger/logback.md",
+            },
+            {
+              text: "SpringBoot集成Log4j",
+              link: "/springFramework/springBoot/logger/log4j.md",
+            },
+            {
+              text: "SpringBoot集成Log4j2",
+              link: "/springFramework/springBoot/logger/log4j2.md",
+            }
+          ],
         },
         {
           text: "文档管理篇",
-          items: [],
+          collapsed: true,
+          items: [
+            {
+              text: "SpringBoot集成Swagger3",
+              link: "/springFramework/springBoot/docs/swagger.md",
+            },
+
+          ],
         },
         {
           text: "监控篇",
-          items: [],
+          collapsed: true,
+          items: [
+            {
+              text: "SpringBoot集成Actuator",
+              link: "/springFramework/springBoot/monitor/actuator.md",
+            },
+            {
+              text: "SpringAdmin",
+              link: "/springFramework/springBoot/monitor/springAdmin.md",
+            },
+          ],
         },
         {
           text: "功能应用篇",
-          items: [],
+          collapsed: true,
+          items: [
+            {
+              text: "接口限流",
+              link: "/springFramework/springBoot/application/rateLimiting.md",
+            },
+            {
+              text: "接口幂等性",
+              link: "/springFramework/springBoot/application/idempotent.md",
+            },
+            {
+              text: "接口超时重试",
+              link: "/springFramework/springBoot/application/retry.md",
+            },
+            {
+              text: "接口加解密",
+              link: "/springFramework/springBoot/application/encryption.md",
+            },
+          ],
         },
         {
           text: "业务篇",
