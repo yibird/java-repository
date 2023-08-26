@@ -4,6 +4,8 @@
 
 ## String 为什么被设计成不可变的?
 
+## new String("abc")创建了几个对象?
+
 ## int 与 Integer 的区别?
 
 ## 什么是反射机制?

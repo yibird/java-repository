@@ -23,29 +23,41 @@ export default {
       link: "/concurrency/internalLock.md",
     },
     {
-      text: "CAS原理与JUC原子类",
-      link: "/concurrency/cas.md",
+      text: "深入synchronized",
+      link: "/concurrency/synchronized.md",
     },
     {
-      text: "JVM内置锁",
-      link: "/concurrency/explicitLock.md",
+      text: "CAS原理与JUC原子类",
+      link: "/concurrency/cas.md",
     },
     {
       text: "AQS",
       link: "/concurrency/AQS.md",
     },
     {
-      text: "JUC",
+      text: "JUC并发工具类",
       collapsed: true,
       items: [
         {
-          text: "CountDownLatch",
+          text: "CountDownLatch(倒时闩)",
           link: "/concurrency/juc/countDownLatch.md",
+        },
+        {
+          text: "Semaphore(信号量)",
+          link: "/concurrency/juc/semaphore.md",
+        },
+        {
+          text: "CyclicBarrier(循环屏障)",
+          link: "/concurrency/juc/cyclicBarrier.md",
+        },
+        {
+          text: "Phaser(相位器)",
+          link: "/concurrency/juc/phaser.md",
         },
       ],
     },
     {
-      text: "并发容器",
+      text: "JUC并发容器",
       collapsed: true,
       items: [
         {
