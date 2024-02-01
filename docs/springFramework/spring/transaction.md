@@ -1,6 +1,6 @@
 ## 1.Spring 事务介绍
 
-Spring 事务管理是 Spring 框架中的重要特性之一,它提供了声明式事务和编程式事务两种方式进行事务的管理。Spring 事务本质上是对事务功能的抽象,其底层依赖于数据源的事务支持,如果数据源不支持事务,即使启用了事务仍不会生效。
+Spring 事务管理是 Spring 框架中的重要特性之一,它提供了声明式事务和编程式事务两种方式进行事务的管理。Spring 事务本质上是对事务功能的抽象,其底层依赖于数据源的事务支持,如果数据源不支持事务(大部分关系型数据库都支持事务,例如 Mysql、PgSQL、Oracle),即使启用了事务也不会生效。
 
 在 Spring 框架中,spring-tx 模块是用于提供声明式事务管理的模块。它包含了 Spring 框架的事务相关的核心功能,包括声明式事务的实现和事务管理的基本接口和类。大多数 ORM 集成 SpringBoot starter 内置了 spring-tx,例如`mybatis-plus-boot-starter`、`spring-boot-starter-data-jpa`、`spring-boot-starter-jdbc`,因此无需手动添加 spring-tx 依赖,否则需要手动添加 spring-tx。
 
@@ -31,7 +31,7 @@ Spring 编程式事务需要在代码中通过编程的方式来管理事务,需
 
 - 定义数据源:
 
-```application
+```properties
 # mysql数据源配置
 spring.datasource.url=jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
 spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
@@ -116,7 +116,7 @@ public class MyService {
 }
 ```
 
-#### 1.3.2 基于 TransactionTemplate 操作事务
+#### 1.4.2 基于 TransactionTemplate 操作事务
 
 TransactionTemplate 是 Spring 框架提供的一个用于编程式管理事务的工具类,它支持以编程式的方式手动控制事务的提交和回滚。TransactionTemplate 提供方法签名如下:
 
@@ -263,7 +263,7 @@ public class MyService {
 }
 ```
 
-#### 1.3.3 TransactionalOperator 操作事务
+#### 1.4.3 TransactionalOperator 操作事务
 
 TransactionalOperator 是 Spring Framework 6 中新增的功能,它提供声明式事务管理的编程式替代方案,适用于反应式编程。使用 TransactionalOperator 需要 spring 响应式和 r2dbc 模块支持:
 
@@ -513,28 +513,30 @@ public class TxPublisher {
 - NEVER:强制要求当前不存在事务,否则抛出异常。NEVER 适合强制要求当前不存在事务的情况,例如某些敏感操作。
 - NESTED:当前的事务会在外层事务的基础上创建一个嵌套事务,如果外层不存在事务,则创建新事务。如果嵌套事务独立提交,则会将自己的事务与外层分开,否则两者合并提交。NESTED 适合一些需要在原有事务的基础上进行嵌套的情况。
 
-## 3.Spring 事务失效的场景
+## 3.Spring 事务源码分析
 
-### 3.1 事务方法访问权限问题
+## 4.Spring 事务失效的场景
+
+### 4.1 事务方法访问权限问题
 
 由于 Spring 事务是基于 Spring AOP 实现的,而 AOP 的本质是动态代理,在 Spring 事务底层源码中,如果代理的事务方法非 public 修饰,执行 computeTransactionAttribute()时就会返回 null,表示事务属性不存在,那么也不会执行事务逻辑,从而导致事务失效。
 
-### 3.2 事务方法使用 final 或 static 关键字导致事务失效
+### 4.2 事务方法使用 final 或 static 关键字导致事务失效
 
 如果一个方法被声明为 final 或 static,则该方法不能被子类重写,无法使用动态代理代理该方法,这会导致 Spring 无法生成事务代理对象来管理事务。因此,为了避免事务失效,因避免使用 final 或 static 修饰。
 
-### 3.3 事务方法内部调用
+### 4.3 事务方法内部调用
 
 Spring 食物语是通过 Spring AOP 代理来实现的,在同一个类中,一个方法调用另一个方法时,调用方法时是直接调用目标对象的方法,而不是通过代理类调用,因此会导致事务不生效。解决办法:
 
 - 将调用方法分为多个类,在一个类方法中调用另一个类的方法。
 - 通过 AopContext.currentProxy()获取当前代理对象,通过代理对象调用方法。
 
-### 3.4 事务方法所属类未被 Spring 管理
+### 4.4 事务方法所属类未被 Spring 管理
 
 Spring 事务基于 Spring AOP 实现,也就是说 Spring IOC 容器获取 Bean 时,Spring 会为目标类创建代理处理事务,如果类未被 Spring 管理,Spring 找不到对应的 Bean,因此也无法创建代理类来处理事务。为了避免事务失效,应该将事务方法所属类注入 Spring IOC 容器,例如在类上添加@Service、@Component 等注解。
 
-### 3.5 没有在 Spring 中启用事务管理器
+### 4.5 没有在 Spring 中启用事务管理器
 
 Spring 事务管理器的作用是确保事务的一致性和完整性。当一个事务涉及多个数据库操作时,如果其中的任何一个操作失败,整个事务都应该被回滚,以保证数据的一致性和完整性。 Spring 事务管理器提供了一种简单而可靠的方式来管理这些操作,并确保它们被作为单个事务来处理。Spring 事务相关类如下:
 
@@ -545,23 +547,23 @@ Spring 事务管理器的作用是确保事务的一致性和完整性。当一�
 
 如果在 Spring 未启用事务管理器,即使在目标方法添加了@Transactional 注解,该方法也不会被 Spring 管理的事务代理拦截。注意:在 SpringBoot 中默认会自动配置事务管理器并开启事务支持。
 
-### 3.6 多线程调用
+### 4.6 多线程调用
 
 Spring 事务是基于线程绑定的,每个线程都有自己的事务上下文,而多线程环境下可能会存在多个线程共享同一事务上下文的情况,从而导致事务失效。在 Spring 事务管理器中,通过 TransactionSynchronizationManager 类来管理事务上下文。TransactionSynchronizationManager 内部维护了一个 ThreadLocal 对象,用来存储当前线程的事务上下文。在事务开始时,TransactionSynchronizationManager 会将事务上下文绑定到当前线程的 ThreadLocal 对象中,当事务结束时,TransactionSynchronizationManager 会将事务上下文从 ThreadLocal 对象中移除。
 
-### 3.7 数据源不支持事务
+### 4.7 数据源不支持事务
 
 Spring 的事务管理底层依赖于数据库本身的事务支持,如果数据源不支持事务,即使添加了 Spring 事务也不会生效,例如 Mysql 的 MyISAM 存储引擎。
 
-### 3.8 配置错误的@Transactional 注解
+### 4.8 配置错误的@Transactional 注解
 
 如果事务方法中使用了@Transactional(readOnly=true),但是在方法中进行了更新操作,此时会抛出异常导致事务失效。readOnly=true 表示一个只读事务,当在事务中更新对应数据时,会抛出异常,因此根据业务场景尽量将 readOnly 设置为 false,如果是读操作则设置为 true。
 
-### 3.9 事务超时时间设置过短
+### 4.9 事务超时时间设置过短
 
 如果设置了事务超时时间,但是执行业务耗时大于事务超时时间,则会出现事务超时,导致事务失效。对于这种情况可以不指定事务超时时间,或根据业务场景设置事务超时时间。
 
-### 3.10 事务设置了错误的传播特性
+### 4.10 事务设置了错误的传播特性
 
 在 Spring 中,事务传播机制是控制多个事务方法之间相互调用的行为方式。Spring 中共支持 7 种事务传播机制,它们是：
 
@@ -575,26 +577,26 @@ Spring 的事务管理底层依赖于数据库本身的事务支持,如果数据
 
 使用 NOT_SUPPORTED 传播特性不支持事务,因此在需要事务的场景下,因避免使用 NOT_SUPPORTED 传播特性。
 
-### 3.11 事务方法内部处理了异常,导致异常无法对外抛出
+### 4.11 事务方法内部处理了异常,导致异常无法对外抛出
 
 如果事务方法中发生的异常被捕获并处理,会导致异常无法正确的传播给事务管理器,从而导致事务失效。在 Spring 事务的 invokeWithinTransaction()方法中,当 Spring catch 到 Throwable 异常的时候,就会调用 completeTransactionAfterThrowing()方法进行事务回滚的逻辑。如果事务方法中发生的异常被捕获并处理,Spring 将无法捕获到异常,因此事务回滚的逻辑就不会执行,导致事务失效。在 Spring 事务方法中,当使用了 try/catch 处理异常时,应当在 catch 中抛出对应的异常。
 
-### 3.12 手动抛出其他异常
+### 4.12 手动抛出其他异常
 
 Spring 事务默认只处理 RuntimeException 和 Error,对于普通 Exception 并不会进行事务回滚,除非,使用 rollbackFor 属性指定配置,例如@Transactional(rollbackFor=Exception.class)。
 
-### 3.13 手动抛出其他异常
+### 4.13 手动抛出其他异常
 
 Spring 事务默认只处理 RuntimeException 和 Error,对于普通 Exception 并不会进行事务回滚,除非,使用 rollbackFor 属性指定配置,例如@Transactional(rollbackFor=Exception.class)。
 
-### 3.14 事务注解被覆盖导致事务失效
+### 4.14 事务注解被覆盖导致事务失效
 
 如果父类事务中使用了事务注解,子类重写父类的事务方法也使用了事务注解,此时子类方法中的事务注解会覆盖了父类的注解(例如子类事务方法和父类事务方法的传播行为不同),Spring 将不会在父类的方法中启用事务。
 
-### 3.15 rollbackFor 属性配置错误
+### 4.15 rollbackFor 属性配置错误
 
 Spring 事务注解的 rollbackFor 属性用于指定在哪些异常发生时需要回滚事务,当方法抛出 rollbackFor 属性中指定的异常或其子类异常时(rollbackFor 指定的异常只能是 Throwable 类或者其子类),事务将回滚;否则,事务不会回滚。该属性可以指定一个异常类或多个异常类,多个异常类以数组的形式指定。如果不指定 rollbackFor 属性,则默认情况下只有 RuntimeException 及其子类(如 Error)异常会触发事务回滚。如果事务方法中抛出的异常,不是 rollback 指定的异常类或及其子类,事务将不会生效。
 
-### 3.16 嵌套事务回滚频繁
+### 4.16 嵌套事务回滚频繁
 
 在 Spring 嵌套事务中,如果内层的事务方法出现了 RuntimeException 和 Error 异常并对外抛出,那么可能会导致外层的事务也会被回滚。

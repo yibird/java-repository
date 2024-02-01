@@ -8,8 +8,8 @@ import Middleware from "./middleware";
 import Microservices from "./microservices";
 import DB from "./db";
 import DesignPatterns from "./designPatterns";
-import BusinessFunctions from "./businessFunctions";
-import Containerization from './containerization'
+import SystemsDesign from "./systemsDesign";
+import Containerization from "./containerization";
 import RefactorAndOptimize from "./refactorAndOptimize";
 import CaseInterview from "./caseInterview";
 
@@ -23,7 +23,7 @@ const sidebars: Sidebar = [
   Microservices,
   DB,
   DesignPatterns,
-  BusinessFunctions,
+  SystemsDesign,
   Containerization,
   RefactorAndOptimize,
   CaseInterview,

@@ -101,60 +101,62 @@ export default {
           ],
         },
         {
-          text: "Redis实践",
-          collapsed: true,
-          items: [
-            {
-              text: "Redis生产实践",
-              link: "/middleware/redis/practice/introduce.md",
-            },
-          ],
+          text: "Redis生产实践",
+          link: "/middleware/redis/recommend.md",
         },
       ],
     },
     {
       text: "MQ",
       collapsed: true,
-      items: [{
-        text: "RabbitMQ",
-        collapsed: true,
-        items: [
-          {
-            text: "初识RabbitMQ及核心概念",
-            link: ""
-          },
-          {
-            text: "RabbitMQ Cluster(集群)",
-            link: ""
-          },
-          {
-            text: "RabbitMQ最佳实践",
-            link: ""
-          }
-        ]
-      }, {
-        text: "RocketMQ",
-        collapsed: true,
-        items: [
-          {
-            text: "初识RocketMQ及核心概念",
-            link: ""
-          },
-        ]
-      },
-      {
-        text: "Kafka",
-        collapsed: true,
-        items: [
-          {
-            text: "初识Kafka及核心概念",
-            link: ""
-          },
-        ]
-      }],
+      items: [
+        {
+          text: "MQ简介",
+          link: "/middleware/mq/introduce.md",
+        },
+        {
+          text: "RabbitMQ",
+          collapsed: true,
+          items: [
+            {
+              text: "初识RabbitMQ及核心概念",
+              link: "",
+            },
+            {
+              text: "RabbitMQ Cluster(集群)",
+              link: "",
+            },
+            {
+              text: "RabbitMQ最佳实践",
+              link: "",
+            },
+          ],
+        },
+        {
+          text: "RocketMQ",
+          collapsed: true,
+          items: [
+            {
+              text: "初识RocketMQ及核心概念",
+              link: "",
+            },
+          ],
+        },
+        {
+          text: "Kafka",
+          collapsed: true,
+          items: [
+            {
+              text: "初识Kafka及核心概念",
+              link: "",
+            },
+          ],
+        },
+      ],
     },
     {
       text: "Web服务器",
+      collapsed: true,
       items: [
         {
           text: "Nginx",

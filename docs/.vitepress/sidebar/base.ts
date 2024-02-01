@@ -127,7 +127,7 @@ export default {
     },
     {
       text: "SPI机制",
-      link: "../../base/spi.md",
+      link: "/base/spi.md",
     },
   ],
 };

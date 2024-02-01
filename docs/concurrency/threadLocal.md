@@ -70,7 +70,7 @@ public class ThreadExample01 {
                         // 若threadLocal不存在则通过set存储
                         local.set(new Foo());
                     }
-                    System.out.println(threadName+": 初识本地值:"+local.get());
+                    System.out.println(threadName+": 初始本地值:"+local.get());
                     // 每个线程执行10次
                     for (int j = 0; j < 10; j++) {
                         Foo foo = local.get();
@@ -98,11 +98,11 @@ public class ThreadExample01 {
 执行结果如下:
 
 ```java
-pool-1-thread-1: 初识本地值:Foo{ bar=10 }
-pool-1-thread-4: 初识本地值:Foo{ bar=10 }
-pool-1-thread-2: 初识本地值:Foo{ bar=10 }
-pool-1-thread-3: 初识本地值:Foo{ bar=10 }
-pool-1-thread-5: 初识本地值:Foo{ bar=10 }
+pool-1-thread-1: 初始本地值:Foo{ bar=10 }
+pool-1-thread-4: 初始本地值:Foo{ bar=10 }
+pool-1-thread-2: 初始本地值:Foo{ bar=10 }
+pool-1-thread-3: 初始本地值:Foo{ bar=10 }
+pool-1-thread-5: 初始本地值:Foo{ bar=10 }
 pool-1-thread-3: 累加10次之后的本地值:Foo{ bar=20 }
 pool-1-thread-5: 累加10次之后的本地值:Foo{ bar=20 }
 pool-1-thread-2: 累加10次之后的本地值:Foo{ bar=20 }

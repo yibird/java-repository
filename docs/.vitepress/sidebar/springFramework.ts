@@ -1,5 +1,5 @@
 export default {
-  text: "Spring全家桶",
+  text: "SpringFramework",
   collapsed: true,
   items: [
     {
@@ -7,16 +7,16 @@ export default {
       collapsed: true,
       items: [
         {
-          text: "Spring介绍",
-          link: "/springFramework/spring/introduce.md",
-        },
-        {
-          text: "IOC与Bean",
+          text: "IOC容器",
           link: "/springFramework/spring/ioc.md",
         },
         {
-          text: "Spring配置管理与SpEl表达式",
-          link: "/springFramework/spring/config&SpEl.md",
+          text: "配置管理",
+          link: "/springFramework/spring/config.md",
+        },
+        {
+          text: "SpEl表达式",
+          link: "/springFramework/spring/spEl.md",
         },
         {
           text: "AOP",
@@ -31,16 +31,16 @@ export default {
           link: "/springFramework/spring/event.md",
         },
         {
-          text: "Spring测试",
-          link: "/springFramework/spring/test.md",
-        },
-        {
           text: "SpringFlux",
           link: "/springFramework/spring/springFlux.md",
         },
         {
           text: "Spring工具类",
           link: "/springFramework/spring/util.md",
+        },
+        {
+          text: "Spring单元测试与Mock",
+          link: "/springFramework/spring/test.md",
         },
         {
           text: "Spring扩展",
@@ -63,23 +63,15 @@ export default {
           items: [
             {
               text: "SpringBoot介绍",
-              link: "/springFramework/springBoot/base/introduce.md",
+              link: "/springFramework/springBoot/base/base.md",
             },
             {
-              text: "SpringBoot整合Untertow",
-              link: "/springFramework/springBoot/base/untertow.md",
-            },
-            {
-              text: "SpringBoot参数验证",
-              link: "/springFramework/springBoot/base/validator.md",
-            },
-            {
-              text: "基于SpringBoot创建一个REST Ful风格API",
+              text: "SpringBoot构建RestFul风格Api",
               link: "/springFramework/springBoot/base/restFul.md",
             },
             {
-              text: "SpringBoot任务调度",
-              link: "/springFramework/springBoot/base/taskScheduling.md",
+              text: "SpringBoot多数据源",
+              link: "/springFramework/springBoot/base/multipleDataSources.md",
             },
             {
               text: "SpringBoot自动装配原理",
@@ -106,6 +98,10 @@ export default {
           collapsed: true,
           items: [
             {
+              text: "Java日志体系",
+              link: "/springFramework/springBoot/logger/logSystem.md",
+            },
+            {
               text: "SpringBoot集成Logback",
               link: "/springFramework/springBoot/logger/logback.md",
             },
@@ -116,7 +112,7 @@ export default {
             {
               text: "SpringBoot集成Log4j2",
               link: "/springFramework/springBoot/logger/log4j2.md",
-            }
+            },
           ],
         },
         {
@@ -127,7 +123,10 @@ export default {
               text: "SpringBoot集成Swagger3",
               link: "/springFramework/springBoot/docs/swagger.md",
             },
-
+            {
+              text: "SpringBoot集成SpringDoc",
+              link: "/springFramework/springBoot/docs/springDoc.md",
+            },
           ],
         },
         {
@@ -148,6 +147,14 @@ export default {
           text: "功能应用篇",
           collapsed: true,
           items: [
+            {
+              text: "参数验证",
+              link: "/springFramework/springBoot/application/validator.md",
+            },
+            {
+              text: "配置加密",
+              link: "/springFramework/springBoot/application/configEncryption.md",
+            },
             {
               text: "接口限流",
               link: "/springFramework/springBoot/application/rateLimiting.md",
