@@ -1,1 +1,0 @@
-import{_ as e,o as a,c as t}from"./chunks/framework.1e38657f.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"base/io/aio.md","filePath":"base/io/aio.md","lastUpdated":1708792908000}'),o={name:"base/io/aio.md"};function s(r,i,c,n,d,p){return a(),t("div")}const f=e(o,[["render",s]]);export{m as __pageData,f as default};
