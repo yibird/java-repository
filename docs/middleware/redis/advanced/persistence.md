@@ -230,7 +230,7 @@ set msg "zxp22"
 
 BGREWRITEAOF 命令是一个异步命令,它没有任何参数,Redis 服务器在接收到该命令之后会创建一个子进程,由它扫描整个数据库并生成新的 AOF 文件。当新的 AOF 文件生成完毕,子进程就会退出并通知 Redis 服务器(父进程),然后 Redis 服务器就会使用新的 AOF 文件代替已有的 AOF 文件,借此完成整个重写操作。关于 BGREWRITEAOF 还有两点需要注意:首先,如果用户发送 BGREWRITEAOF 命令请求时,服务器正在创建 RDB 文件,那么服务器将把 AOF 重写操作延后到 RDB 文件创建完毕之后再执行,从而避免两个写硬盘操作同时执行导致机器性能下降;其次,如果服务器在执行重写操作的过程中,又接收到了新的 BGREWRITEAOF 命令请求,那么服务器将返回以下错误:
 
-```text
+```txt
 redis> BGREWRITEAOF
 (error) ERR Background append only file rewriting already in progress
 ```

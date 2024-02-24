@@ -164,7 +164,7 @@ systemctl enable redis.service
 
 除了通过 redis-cli 连接 Redis 服务外,也可以通过图形化工具连接 Redis 服务。Redis 常用的图形化工具有 RedisInsight(Redis 官方图形化客户端)、Another Redis DeskTop Manager。远程连接 Redis 服务时需要注意 Redis 配置文件和防火墙两个步骤,否则将导致连接失败。redis.config 中需要修改三个配置(修改完毕后需重启 redis-server):
 
-```text
+```txt
 (1).指定主机名或注释bind配置。redis.conf中有一个bind配置项,此配置项表示允许连接的主机host,默认是127.0.0.1(也就是本机访问),如果要远程访问则需要指定允许访问的主机名,或者将bind配置注释掉。
 
 (2).将 protected-mode yes 配置修改为 protected-mode no,protected-mode表示是否启用保护模式,默认情况下启用保护模式,只有在以下情况下才应禁用它:第一您确定要让其他主机的客户端连接到Redis,即使未配置身份验证,也没有特定的接口集,第二使用"bind"指令显式列出。

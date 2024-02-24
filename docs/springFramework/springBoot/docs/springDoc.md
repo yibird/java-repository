@@ -4,9 +4,9 @@ Swagger 是一个规范(基于 OpenAPI 规范)和完整的框架,用于生成、
 
 springdoc-openapi 是一个使用 Spring 引导项目自动生成 API 文档的 Java 库,通过在运行时检查应用程序来根据 Spring 配置、类结构和各种注释推断 API 语义。springdoc-openapi 支持如下功能:
 
-- OpenAPI 3。OpenAPI 3 是一种 API 描述规范，它是 Swagger 规范的最新版本。OpenAPI 3 规范定义了一种标准的方式来描述 RESTful API，包括 API 的端点、请求参数、响应信息、错误处理、安全性等各方面的细节。
+- OpenAPI 3。OpenAPI 3 是一种 API 描述规范,它是 Swagger 规范的最新版本。OpenAPI 3 规范定义了一种标准的方式来描述 RESTful API,包括 API 的端点、请求参数、响应信息、错误处理、安全性等各方面的细节。
 - Spring-boot v3(Java 17 & Jakarta EE 9):springdoc-openapi 在 2.x 中支持 SpringBoot3.x。
-- 支持 JSR-303 规范。JSR-303 是 Java 规范请求的一部分，全称为"Java Specification Request 303"，它定义了 Java 中的 Bean 校验规范，即 Bean Validation。JSR-303 于 2009 年发布，它提供了一种声明性的验证规范，用于验证 JavaBean 中的字段值是否符合预期的规则和约束。JSR-303 常用验证注解包括@NotNull、@NotBlank、@NotEmpty、@Min、@Max 等等。
+- 支持 JSR-303 规范。JSR-303 是 Java 规范请求的一部分,全称为"Java Specification Request 303",它定义了 Java 中的 Bean 校验规范,即 Bean Validation。JSR-303 于 2009 年发布,它提供了一种声明性的验证规范,用于验证 JavaBean 中的字段值是否符合预期的规则和约束。JSR-303 常用验证注解包括@NotNull、@NotBlank、@NotEmpty、@Min、@Max 等等。
 - Swagger-ui 界面。
 - OAuth 2。
 - GraalVM native images。
@@ -263,7 +263,7 @@ springdoc-openapi 支持三种方式定义文档标题、描述、联系人等�
 ### 2.1 通过 JavaConfig 方式
 
 在 Springdoc 中,OpenAPI 类是用于构建 OpenAPI 规范（即 Swagger 规范）的核心类之一。它可以通过配置和编程方式来定义 API 的元数据,包括 API 信息、端点路径、参数、响应等,最终生成 OpenAPI 文档。
-在 Springdoc 中,GroupedOpenApi 类是用于将 API 按照分组的方式进行管理的类。通过 GroupedOpenApi 类,可以将一组相关的 API 端点进行分组，并分别为每个组定义独立的 OpenAPI 规范。在大型项目中,特别是拥有多个模块或微服务的项目中非常有用,可以更好地组织和管理 API 文档。
+在 Springdoc 中,GroupedOpenApi 类是用于将 API 按照分组的方式进行管理的类。通过 GroupedOpenApi 类,可以将一组相关的 API 端点进行分组,并分别为每个组定义独立的 OpenAPI 规范。在大型项目中,特别是拥有多个模块或微服务的项目中非常有用,可以更好地组织和管理 API 文档。
 
 ```java
 package com.fly.config;
@@ -584,7 +584,7 @@ springdoc 使用 swagger 提供了文档管理、接口调试等功能,但由于
 Apifox 是一个 API 文档、API 调试、API Mock、API 自动化测试工具,等同于 Postman + Swagger + Mock + JMeter。Swagger 导入文档到 Apifox 步骤如下:
 
 - 主界面-->新建团队-->完成后-->新建项目(已有项目可忽略)。
-- 主界面-->项目设置--> 导入数据(手动导入) 或者 导入数据(自动同步) --> 数据格式选择 OpenAPI/Swagger --> 选择 URL 导入。填写 Swagger 数据 URL(例如:http://localhost:8080/v2/api-docs)然后提交即可。注意:导入数据(自动同步) 通过手动或定时方式重新获取 Swagger 数据。
+- 主界面-->项目设置--> 导入数据(手动导入) 或者 导入数据(自动同步) --> 数据格式选择 OpenAPI/Swagger --> 选择 URL 导入。填写 Swagger 数据 URL(例如:`http://localhost:8080/v2/api-docs`)然后提交即可。注意:导入数据(自动同步) 通过手动或定时方式重新获取 Swagger 数据。
 
 ![yapi](/assets/img/spring/swagger01.png)
 
