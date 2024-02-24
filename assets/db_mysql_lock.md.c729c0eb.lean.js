@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as a}from"./chunks/framework.1e38657f.js";const _=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"db/mysql/lock.md","filePath":"db/mysql/lock.md","lastUpdated":1708792908000}'),o={name:"db/mysql/lock.md"};function s(c,r,d,l,n,m){return t(),a("div")}const i=e(o,[["render",s]]);export{_ as __pageData,i as default};
