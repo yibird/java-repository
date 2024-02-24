@@ -1,5 +1,23 @@
 ## Java 中基础类型有哪些?
 
+在 Java 中类型可分为基本类型(也称原始类型)和引用类型:
+
+- 基本类型:int、boolean、byte、char、short、float、long、double。
+- 引用类型:包括类、接口、数组等。注意:引用类型的变量存储的是对象的引用,而不是对象本身。
+
+Java 为基本类型提供了对应的包装类型,包装类型属于引用类型,其默认值都为 null。基本类型与其对应的包装类型之间的赋值使用自动装箱与拆箱完成,即基本类型赋值给包装类型称为装箱,包装类型赋值给基本类型称为拆箱。
+
+| 类型    | 占用大小(字节) | 默认值 | 取值范围                                    | 描述                  | 对应的包装类型 |
+| ------- | -------------- | ------ | ------------------------------------------- | --------------------- | -------------- |
+| boolean | 1              | false  | true 或者 false                             | 用于表示布尔值        | Boolean        |
+| byte    | 1              | 0      | -128 到 127                                 | 用于表示字节流数据    | Byte           |
+| char    | 2              | 空     | 0 到 65535                                  | 用于表示 Unicode 字符 | Char           |
+| short   | 2              | 0      | -32768 到 32767                             | 用于表示较小的整数    | Short          |
+| int     | 4              | 0      | -2147483648 到 2147483647                   | 用于表示整数          | Integer        |
+| float   | 4              | 0.0    | ±1.4e-45 到 ±3.4e+38                        | 用于表示单精度浮点数  | Float          |
+| long    | 8              | 0      | -9223372036854775808 到 9223372036854775807 | 用于表示较大的整数    | Long           |
+| double  | 8              | 0.0    | ±4.9e-324 到 ±1.8e+308                      | 用于表示双精度浮点数  | Double         |
+
 ## 什么是拆箱和装箱?
 
 ## 类型转换
@@ -7,6 +25,41 @@
 ## == 与 equal()的区别
 
 ## int 与 Integer 的区别?
+
+- int 属于基本类型,指向存储的数值,而 Integer 是 int 的包装类,属于引用类型,指向 Integer 实例化后的对象。
+- Integer 声明的变量必须实例化后才能使用,int 声明的变量无需实例化也能使用。
+- int 的默认值为 0,Integer 的默认值为 null。
+
+```java
+// (1).Integer变量实际上是对一个Integer对象的引用,所以两个通过new实例化的Integer永不相等
+Integer n1 = new Integer(1);
+Integer n2 = new Integer(1);
+System.out.println(n1 == n2); // false
+
+
+// (2).Integer变量与int变量比较时,只要数值相等,则比较结果为true。包装类型与基本类型比较时,Java会自动将包装类型拆箱为基本类型,然后进行比较
+Integer n3 = 100;
+int n4 = 100;
+System.out.println(n3 == n4); // true
+
+// (3).通过new实例化声明的Integer变量与Integer声明的变量比较时,结果为false。通过new实例化声明的Integer变量指向JVM内存区域堆中新创建的对象,
+// 而Integer声明的变量指向Integer内部静态常量池中cache数组存储的指向堆的Integer对象,两者引用的内存地址不同
+Integer x = 100;
+Integer y = new Integer(100);
+System.out.println(x == y); // false
+
+
+// (4).两个Integer声明的变量比较时,如果两个变量的值在-128到127之间,则比较结果为true,超出该区间结果为false。为了提升初始化性能,Integer内部使用静态常量池
+// 初始化了-128到127区间的数值,当Integer声明的变量数值相同时,本质上指向的是同一块内存地址
+
+Integer int1 = 100;
+Integer int2 = 100;
+System.out.println(int1 == int2); // true,由于Integer数值范围处于-128到127之间,因此int1与int2复用静态常量池Integer对象,指向同一块内存地址
+
+Integer int3 = 128;
+Integer int4 = 128;
+System.out.println(int3 == int4); // false
+```
 
 ## String 为什么被设计成不可变的?
 
@@ -87,6 +140,8 @@ Java 中的访问权限修饰符用于控制类、接口、成员变量和方法
 - finally:finally 是 Java 异常处理关键字,用于定义在 try 块或 try-catch 块执行之后总是执行的代码块,通常用于资源释放,例如关闭数据库连接、关闭 IO 流等操作。
 
 ## 什么是反射机制?
+
+Java 反射机制是指在 Java 应用运行中,对于任意一个类,都可以获取该类的所有属性和方法; 对于任意一个对象,都可以调用它的任意一个方法和属性。这种在运行时动态获取的信息以及动态调用对象的方法的功能称为 Java 语言的反射机制。
 
 ## 什么是类型擦除?
 

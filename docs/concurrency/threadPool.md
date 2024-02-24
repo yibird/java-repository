@@ -418,8 +418,8 @@ ScheduledExecutorService 接口中有多个重要的调度方法,其中最为常
 Executors 线程池工厂类虽然提供了创建线程池的便捷方式(其内部也基于 ThreadPoolExecutor,定时任务基于 ScheduledThreadPoolExecutor)
 ,但在阿里巴巴开发手册明确规定禁止使用 Executors 创建线程池,推荐使用 ThreadPoolExecutor 线程池创建线程,原因如下:
 
-- **newFixedThreadPool()和 newSingleThreadPool()线程池内部处理的队列为无界队列,允许的队列长度为**`**Integer.MAX_VALUE**`**,在处理大量任务时会导致任务堆积,从而导致 OOM(内存溢出)。**
-- **newCachedThreadPool()允许的创建线程数量为**`**Integer.MAX_VALUE**`**,可能会创建大量的线程,从而导致 OOM(内存溢出)**。
+- **newFixedThreadPool()和 newSingleThreadPool()线程池内部处理的队列为无界队列,允许的队列长度为`Integer.MAX_VALUE`,在处理大量任务时会导致任务堆积,从而导致 OOM(内存溢出)**。
+- **newCachedThreadPool()和 newScheduleThreadExecutor()允许的创建线程数量为`Integer.MAX_VALUE`,可能会创建大量的线程,从而导致 OOM(内存溢出)**。
 
 ThreadPoolExecutor 提供了多个构造方法重载,最重要的一个构造器如下:
 

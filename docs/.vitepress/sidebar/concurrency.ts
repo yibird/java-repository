@@ -31,6 +31,10 @@ export default {
       link: "/concurrency/cas.md",
     },
     {
+      text: "JUC显式锁",
+      link: "/concurrency/jucLock.md",
+    },
+    {
       text: "AQS",
       link: "/concurrency/AQS.md",
     },
@@ -61,12 +65,20 @@ export default {
       collapsed: true,
       items: [
         {
+          text: "并发容器",
+          link: "/concurrency/container/concurrentContainer.md",
+        },
+        {
           text: "CopyOnWriteArrayList",
-          link: "/concurrency/juc/container/copyOnWriteArrayList.md",
+          link: "/concurrency/container/copyOnWriteArrayList.md",
         },
         {
           text: "ConcurrentHashMap",
-          link: "/concurrency/juc/container/concurrentHashMap.md",
+          link: "/concurrency/container/concurrentHashMap.md",
+        },
+        {
+          text: "BlockingQueue",
+          link: "/concurrency/container/blockingQueue.md",
         },
       ],
     },

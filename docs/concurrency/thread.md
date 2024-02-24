@@ -376,7 +376,7 @@ public class Thread04 {
 ```
 
 :::danger
-注意:虽然 Executors 框架内置了四种线程池,但实际禁止使用 Executors 创建线程池,这是因为 Executors 创建的线程池可能会导致 OOM(内存溢出)。
+注意:虽然 Executors 框架内置了四种线程池,但实际开发中应禁止使用 Executors 创建线程池,这是因为 Executors 创建的线程池可能会导致 OOM(内存溢出)。
 :::
 
 #### 2.1.5 总结
@@ -603,13 +603,356 @@ public class Thread06 {
 - 守护线程存在在被 JVM 强制终止的风险,所以在守护线程尽量不去访问系统资源,如文件句柄、数据库连接等等。守护线程被强行终止时,可能会引发系统资源操作不负责任的中断,从而导致资源不可逆的损坏。
 - 守护线程创建的线程也是守护线程。
 
-## 3.线程操作
+## 3.线程协作
+
+线程协作是指多个线程在执行任务时相互合作、互相通信以达到某个共同的目标。线程协作通常需要使用对象的等待和唤醒机制,以及同步机制,来确保线程之间的正确协调。在 Java 中,常见的线程协作方式包括使用 wait()、notify()和 notifyAll()方法。
+
+### 3.1 wait()
+
+**wait()是 Object 提供用于将当前线程置于等待状态,并释放对象的锁**。它是线程间协作的基础之一,通常与 synchronized 关键字一起使用,用于实现线程之间的通信和同步。Object 中提供了多个 wait()重载,方法签名如下:
+
+```java
+public final void wait() throws InterruptedException;
+/**
+ * 该方法允许线程在指定的时间内等待(timeoutMillis表示等待的最长时间,以毫秒为单位),
+ * 如果在这段时间内没有被其他线程唤醒,线程将自动苏醒
+ */
+public final void wait(long timeoutMillis) throws InterruptedException
+```
+
+注意:**wait() 方法必须在同步块(synchronized block)或同步方法中调用,即线程必须拥有对象的锁**。调用 wait() 后,当前线程会释放对象的锁,然后进入等待状态。在等待状态时,当前线程不再参与调度,直到其他线程调用相同对象的 notify() 或 notifyAll() 方法,或者指定的等待时间到期。当线程被唤醒后,它会重新尝试获得对象锁,并继续执行 wait() 之后的代码。在 Java 中,当使用 wait() 或 notify() 方法时,调用这些方法的线程必须是拥有对象锁的线程。如果不是,就会抛出 IllegalMonitorStateException 异常,提示 "current thread is not owner"。
+
+```java
+public class MyThread extends Thread {
+    // 定义一把锁
+    private static final Object lock = new Object();
+
+    @Override
+    public void run() {
+        // synchronized锁对象为当前实例
+        synchronized (lock) {
+            try {
+                System.out.println("线程等待中...");
+                /**
+                 * 调用wait()使当前线程处于等待状态,并释放锁资源(lock),直到调用notify()或notifyAll()
+                 * 唤醒处于等待的线程(调用wait、notify、notifyAll必须是拥有对象锁的线程,否则抛出IllegalMonitorStateException),
+                 * 否则将阻塞后续代码执行
+                 */
+                lock.wait();
+                System.out.println("线程等待完毕...");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        MyThread thread = new MyThread();
+        thread.start();
+
+        // 等待3s唤醒处于等待的线程,3s后打印 "线程等待完毕..."
+        try {
+            Thread.sleep(3000);
+            synchronized (lock) {
+                lock.notify();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### 3.2 notify()与 notifyAll()
+
+notify() 和 notifyAll() 都是用于线程协作的方法,它们都属于 Object 类的方法,需要在同步块(synchronized)中调用.且必须拥有对象锁。
+
+- notify():用于唤醒在当前对象上等待的一个线程。如果有多个线程在等待,由系统决定唤醒哪个线程。
+- notifyAll() 方法用于唤醒在当前对象上等待的所有线程。如果有多个线程在等待.且它们的状态都可能符合条件.应该使用 notifyAll() 以确保所有等待的线程都有机会竞争获取锁。
+
+```java
+public class MyThread extends Thread {
+    // 定义一把锁
+    private static final Object lock = new Object();
+
+    @Override
+    public void run() {
+        // synchronized锁对象为当前实例
+        synchronized (lock) {
+            try {
+                System.out.println("线程" + Thread.currentThread().getName() + "等待中...");
+                /**
+                 * 调用wait()使当前线程处于等待状态,并释放锁资源(lock),直到调用notify()或notifyAll()
+                 * 唤醒处于等待的线程(调用wait、notify、notifyAll必须是拥有对象锁的线程,否则抛出IllegalMonitorStateException),
+                 * 否则将阻塞后续代码执行
+                 */
+                lock.wait();
+                System.out.println("线程" + Thread.currentThread().getName() + "等待完毕...");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        // 创建两个线程
+        MyThread thread01 = new MyThread();
+        MyThread thread02 = new MyThread();
+        thread01.start();
+        thread02.start();
+
+        /**
+         * 等待3s唤醒处于等待的线程,3s后打印 "线程等待完毕...",由于启动了两个线程,
+         * 调用lock.notify()后只会唤醒在当前对象上等待的一个线程,另外一个线程仍处于等待状态,
+         * 应用程序不会终止。
+         *
+         * 当调用lock.notifyAll()唤醒所有处于等待状态的线程时,处于等待状态的两个线程都会被唤醒,
+         * 打印"线程等待完毕",应用程序终止。
+         */
+        try {
+            Thread.sleep(3000);
+            synchronized (lock) {
+                // notify()用于唤醒上一个处于等待的线程,notifyAll()唤醒所有处于等待状态的线程
+                lock.notify();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### 3.3 Thread.sleep()
+
+Thread.sleep(long millis) 方法是 Thread 类的静态方法之一,用于让当前线程休眠指定的时间(以毫秒为单位)。在线程休眠期间,线程不会占用 CPU 资源,从而让其他线程有机会执行。
+
+```java
+public class SleepExample {
+    public static void main(String[] args) {
+        System.out.println("开始启动");
+        try {
+            // 让当前线程休眠 2 秒,2s后打印"启动结束"
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("启动结束");
+    }
+}
+```
+
+**注意:相较于 wait()方法 Thread.sleep() 方法不会释放锁,如果在同步块中调用,其他线程无法进入这个同步块,即使当前线程在休眠**。
+
+```java
+public class MyThread {
+    // 定义一把锁
+    private static final Object lock = new Object();
+
+
+    public static void main(String[] args) {
+        // 创建两个线程
+        Thread thread01 = new Thread(MyThread::sleepingTask);
+        Thread thread02 = new Thread(MyThread::otherTask);
+        thread01.start();
+        thread02.start();
+    }
+
+    public static void sleepingTask() {
+        synchronized (lock) {
+            System.out.println("线程1进入同步块");
+            try {
+                // 当前线程休眠 5s
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("线程1退出同步块");
+        }
+    }
+
+    public static void otherTask() {
+        synchronized (lock) {
+            System.out.println("线程2进入同步块");
+            System.out.println("线程2退出同步块");
+        }
+    }
+}
+```
+
+在上述例子中,sleepingTask 方法在同步块中调用了 Thread.sleep(5000),休眠了 5 秒。在这段时间内,otherTask 方法尝试进入同样的同步块,但由于 sleepingTask 持有 lock 对象锁,otherTask 无法进入,只能等待 sleepingTask 执行完毕释放锁。这表明了 Thread.sleep() 方法不会释放锁的特性。
+
+### 3.4 Thread.yield()
+
+Thread.yield() 方法是 Thread 类的一个静态方法,用于提示调度器当前线程愿意放弃当前对处理器的使用,给其他线程执行的机会(让出当前线程的执行权,优先执行其他线程)。这个方法是对线程调度器的一种建议,具体实现取决于底层操作系统的调度策略。
+
+```java
+public class MyThread extends Thread {
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= 5; i++) {
+            if (i == 3) {
+                Thread.yield();
+                System.out.println("线程" + Thread.currentThread().getName() + ",i=" + i + ",让出CPU调度权,优先执行其他线程");
+                continue;
+            }
+            System.out.println("线程" + Thread.currentThread().getName() + ",i=" + i);
+        }
+    }
+
+    public static void main(String[] args) {
+        // 创建3个线程
+        MyThread thread01 = new MyThread();
+        MyThread thread02 = new MyThread();
+        MyThread thread03 = new MyThread();
+        thread01.start();
+        thread02.start();
+        thread03.start();
+    }
+}
+```
+
+### Thread.join()
+
+### 通过 wait()、notify()实现生产者模型
+
+生产者-消费者模型是一种常见的多线程协作模式,其中有一个或多个生产者负责生产数据,而一个或多个消费者负责消费这些数据。在 Java 中,可以使用 wait()和 notify()方法来实生产者-消费者模型。
+
+### 通过 wait()、notify()实现交通灯
+
+实现交通灯的切换效果,可以使用 wait() 和 notify() 方法来进行线程协作。每个交通灯对应一个线程,通过 wait() 和 notify() 控制各个交通灯之间的切换。
+
+```java
+public class TrafficLightExample {
+    // 定义一把锁
+    private static final Object LOCK = new Object();
+    // 初始颜色为RED
+    private static final String COLOR_RED = "RED";
+    private static final String COLOR_YELLOW = "YELLOW";
+    private static final String COLOR_GREEN = "GREEN";
+    private static String color = COLOR_RED;
+
+
+    public static void redLight() {
+        synchronized (LOCK) {
+            try {
+                while (true) {
+                    // 如果当前不是红灯,则当前线程等待
+                    while (!COLOR_RED.equals(color)) {
+                        LOCK.wait();
+                    }
+                    System.out.println("红灯亮起");
+                    // 红灯持续2秒
+                    Thread.sleep(2000);
+                    // 切换到黄灯
+                    color = COLOR_YELLOW;
+                    LOCK.notifyAll();
+                    // 释放锁,使当前线程处于等待状态,让其他线程有机会执行
+                    LOCK.wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void yellowLight() {
+        synchronized (LOCK) {
+            try {
+                while (true) {
+                    // 如果当前是黄灯,则当前线程等待
+                    while (!COLOR_YELLOW.equals(color)) {
+                        LOCK.wait();
+                    }
+                    System.out.println("黄灯亮起");
+                    // 黄灯持续3s
+                    Thread.sleep(3000);
+                    // 切换到绿灯
+                    color = COLOR_GREEN;
+                    LOCK.notifyAll();
+                    // 释放锁,使当前线程处于等待状态,让其他线程有机会执行
+                    LOCK.wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void greenLight() {
+        synchronized (LOCK) {
+            try {
+                while (true) {
+                    // 如果当前不是绿灯,则当前线程等待
+                    while (!COLOR_GREEN.equals(color)) {
+                        LOCK.wait();
+                    }
+                    System.out.println("绿灯亮起");
+                    // 绿灯持续2s
+                    Thread.sleep(2000);
+                    // 切换到红灯
+                    color = COLOR_RED;
+                    LOCK.notifyAll();
+                    // 释放锁,使当前线程处于等待状态,让其他线程有机会执行
+                    LOCK.wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        // 创建红、黄、绿三个线程
+        Thread redLightThread = new Thread(TrafficLightExample::redLight);
+        Thread yellowLightThread = new Thread(TrafficLightExample::yellowLight);
+        Thread greenLightThread = new Thread(TrafficLightExample::greenLight);
+        redLightThread.start();
+        yellowLightThread.start();
+        greenLightThread.start();
+    }
+}
+```
 
 ## 4.停止线程的三种方式
 
 ### 4.1 通过 interrupt()关闭线程
 
 interrupt()用于中断线程,Thread 类提供了 isInterrupted()方法判断线程是否处于中断状态。如果该线程在调用 Object 类的 wait()方法时被阻塞,或者在调用该类的 join()、sleep()方法中被阻塞,则其中断状态将被清除,并将抛出 InterruptedException 异常。
+
+```java
+public class MyThread extends Thread{
+    @Override
+    public void run() {
+        try {
+            // 循环判断当前线程是否中断
+            while (!Thread.interrupted()) {
+                System.out.println("线程工作中...");
+                // 模拟线程执行
+                Thread.sleep(1000);
+            }
+        }catch (InterruptedException e){
+            System.out.println("线程在睡眠时中断.");
+        }
+    }
+
+    public static void main(String[] args) {
+        // 创建一个线程
+        MyThread myThread = new MyThread();
+        // 启动线程
+        myThread.start();
+
+        // 模拟运行一段时间后中断线程
+        try {
+            Thread.sleep(3000);
+            // 中断当前线程
+            myThread.interrupt();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
 
 ### 4.2 通过 stop()、suspend()、resume()停止线程
 
@@ -626,4 +969,95 @@ resume()用于恢复被挂起的线程,由于此方法仅用于恢复被挂起�
 
 ### 4.3 通过 volatile+标志位停止线程
 
+在 Java 中,可以通过使用 volatile 关键字和一个标志位来实现安全地停止线程。这种方法通常是通过在执行线程的任务中检查一个 volatile 类型的标志位,当标志位为 true 时,线程停止执行。
+
+```java
+public class MyThread extends Thread {
+    // 定义标志位,使用volatile修饰变量保证线程可见性
+    private volatile boolean isRunning = true;
+
+    @Override
+    public void run() {
+        while (isRunning) {
+            System.out.println("线程工作中...");
+            try {
+                // 模拟线程耗时操作
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 停止线程方法
+     */
+    public void stopThread() {
+        isRunning = false;
+    }
+
+    public static void main(String[] args) {
+        MyThread thread = new MyThread();
+        thread.start();
+
+        // 模拟运行一段时间后停止线程
+        try {
+            Thread.sleep(3000);
+            thread.stopThread();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
 使用 volatile+标志位停止线程在某些特殊的情况下(例如线程被长时间阻塞),无法及时感知线程被中断,因此 volatile+标志位停止线程并不能关闭线程的实时性。
+
+```java
+public class MyThread extends Thread {
+    // 定义标志位,使用volatile修饰变量保证线程可见性
+    private volatile boolean isRunning = true;
+    // 定义一把对象锁
+    private final Object lock = new Object();
+
+    @Override
+    public void run() {
+        try {
+            while (isRunning) {
+                synchronized (lock) {
+                    // 模拟一个可能长时间阻塞的操作
+                    lock.wait();
+                    System.out.println("线程等待中...");
+                }
+                System.out.println("线程工作中...");
+            }
+        } catch (InterruptedException e) {
+            System.out.println("线程中断.");
+        }
+    }
+
+    /**
+     * 停止线程方法
+     */
+    public void stopThread() {
+        synchronized (lock) {
+            // 唤醒可能在等待的线程
+            lock.notifyAll();
+        }
+        isRunning = false;
+    }
+
+    public static void main(String[] args) {
+        MyThread thread = new MyThread();
+        thread.start();
+
+        // 模拟运行一段时间后停止线程
+        try {
+            Thread.sleep(5000);
+            thread.stopThread();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```

@@ -51,7 +51,12 @@ export default {
     {
       text: "SpringMVC",
       collapsed: true,
-      items: [],
+      items: [
+        {
+          text: "SpringMVC介绍",
+          link: "/springFramework/springMVC/introduce.md",
+        },
+      ],
     },
     {
       text: "SpringBoot",
@@ -175,7 +180,17 @@ export default {
         },
         {
           text: "业务篇",
-          items: [],
+          collapsed: true,
+          items: [
+            {
+              text: "EasyExcel处理Excel",
+              link: "/springFramework/springBoot/business/easyExcel.md",
+            },
+            {
+              text: "数据脱敏",
+              link: "/springFramework/springBoot/business/desensitization.md",
+            },
+          ],
         },
       ],
     },

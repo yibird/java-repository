@@ -19,6 +19,10 @@ export default {
       link: "/caseInterview/db.md",
     },
     {
+      text: "中间件",
+      link: "/caseInterview/middleware.md",
+    },
+    {
       text: "微服务",
       link: "/caseInterview/microservices.md",
     },

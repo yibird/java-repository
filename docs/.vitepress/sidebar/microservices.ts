@@ -54,7 +54,7 @@ export default {
       items: [
         {
           text: "分布式ID",
-          link: "",
+          link: "/microservices/solution/distributedID.md",
         },
         {
           text: "分布式会话",
