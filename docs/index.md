@@ -5,7 +5,7 @@ hero:
   text: 一个非常完备的Java知识库
   tagline: 时间不在于你拥有多少,而在于你怎样使用
   image:
-    src: /assets/img/logo.jpg
+    src: https://picss.sunbangyan.cn/2024/02/25/a535ae12d3621ac55bb276b1909e4e78.jpeg
     alt: Java知识库
   actions:
     - theme: brand
@@ -13,7 +13,7 @@ hero:
       link: /base/type.html
     - theme: alt
       text: View on GitHub
-      link: https://github.com/vuejs/vitepress
+      link: https://github.com/yibird
 features:
   - title: Java基础与进阶
     details: 类型、集合、泛型、注解、异常、反射、IO、网络编程、SPI等。

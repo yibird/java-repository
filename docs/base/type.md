@@ -437,6 +437,12 @@ long y = x; // 隐式转换,int转为long
 
 - 强制转换:强制转换是指通过强制指定类型,将一个数据类型转换为另一个数据类型。这种转换需要在代码中显式地指定,并且可能导致数据丢失或溢出。强制转换的语法为将目标类型放在圆括号中,紧跟在要转换的表达式或变量之前。
 
+```java
+int num = 10;
+// 将int类型强制转换为String类型
+String str = (String)num;
+```
+
 ## 4.运算
 
 ### 4.1 复合赋值运算
@@ -619,7 +625,132 @@ class MyClass {
 
 ### 6.2 抽象类和接口
 
+Java 中的抽象类(Abstract Class)和接口(Interface)都是用于实现面向对象编程的机制。抽象类适用于存在通用代码,但是需要子类实现的应用场景;接口适用于实现多态(一个抽象有多个实现)、解耦、多继承的应用场景。
+
+#### 6.2.1 抽象类
+
+- 在 Java 中,抽象类使用 abstract 关键字定义。
+- 抽象类可以有构造函数,用于初始化抽象类的状态,子类在实例化时会调用抽象类的构造函数。
+- 抽象类可以包含抽象方法和具体方法。抽象方法是没有实现的方法,子类必须实现它们。具体方法有默认的实现,子类可以选择性地覆盖。
+- 抽象类可以有实例变量(字段)。
+- 抽象类中的方法和字段支持 public、private、protected、default 四种访问修饰符。
+
+```java
+// 抽象类使用abstract修饰一个类,且遵循单继承原则。抽象类的成员(方法和字段)可以使用public、default、private、protected四种修饰符
+public abstract class AbstractClassExample {
+
+    // 抽象类支持定义构造方法,而接口不支持
+    public AbstractClassExample() {
+    }
+
+    // 抽象类不仅可以定义实例变量,还可以定义常量
+    private String name;
+    private final static int NUMBER = 1000;
+
+
+    // 定义普通方法
+    public void hello() {
+        System.out.println("hello!");
+    }
+
+    // 定义抽象方法,抽象方法没有具体的实现,当子类继承自抽象类时,子类必须要重写该抽象类的抽象方法
+    public abstract void eat();
+}
+```
+
+#### 6.2.2 接口
+
+- 在 Java 中,接口使用 interface 关键字定义。
+- 接口不能包含构造函数。
+- 接口中只能包含抽象方法和默认方法(默认方法是 Java 8+引入新特性,它允许在接口中提供具有默认实现的方法,它可以不破坏现有代码的基础上向接口添加新的方法),所有方法默认是 public 和 abstract 的。
+- 接口只能包含常量字段(public static final),不能包含实例变量。
+- 接口中的方法和属性都是 public 的。
+- 接口支持多继承。由于 Java 类遵循单继承原则,一个类无法继承自多个类,当一个类需要继承自多个类时,推荐使用接口。
+
+```java
+// 接口使用interface修饰,支持多继承,且不支持构造函数。接口中所有成员(方法、字段)必须是public的,接口中的方法都是抽象方法
+public interface InterfaceExample extends RandomAccess, Serializable {
+
+    // 接口中只能定义常量,无法定义实例变量
+    public final static int NUMBER = 1000;
+
+
+    // 定义普通方法,由于接口要求所有成员必须是public的,因此可以省略访问修饰符(默认是default)
+    public void hello();
+
+    void eat();
+
+
+    // 定义默认方法,默认方法是Java8提供的新特性,默认方法允许本身提供默认实现,它可以不破坏现有代码的基础上向接口添加新的方法
+    default void say() {
+        System.out.println("Interface在说话");
+    }
+}
+```
+
 ### 6.3 super
+
+super 是 Java 提供的关键字,用于在子类中与父类进行交互,调用父类的构造方法或访问父类的成员。super 的主要作用如下:
+
+- 调用父类的构造方法:在子类的构造方法中可以使用 super() 可以调用父类的构造方法,这是因为在默认情况下,子类的构造方法会隐式调用父类的无参构造方法,但如果父类没有无参构造方法,或者希望调用父类的特定构造方法时,就需要使用 super() 显式调用。
+
+```java
+public class SuperExample {
+    public static class Parent {
+        public Parent() {
+            System.out.println("父类构造方法");
+        }
+
+        public Parent(String name) {
+            System.out.println("父类构造方法,name:" + name);
+        }
+    }
+
+    public static class Child extends Parent {
+        public Child() {
+            // 在子类中使用super()调用父类的无参构造方法,注意:super()调用必须是构造函数体中的第一条语句
+            super();
+        }
+
+        public Child(String name) {
+            // 在子类中使用super()调用父类的有参构造方法
+            super(name);
+        }
+    }
+
+    public static void main(String[] args) {
+        Child child01 = new Child();
+        Child child02 = new Child("child");
+    }
+}
+
+```
+
+- 调用父类的成员:在子类中,使用 super 关键字可以访问父类的成员(字段、方法)。这在子类中存在与父类同名的成员时特别有用,通过 super 可以明确指定要访问的是父类的成员。
+
+```java
+public class SuperExample {
+    public static class Parent {
+        public String name = "parent";
+
+        public void load() {
+            System.out.println("加载Parent...");
+        }
+    }
+
+    public static class Child extends Parent {
+        public Child() {
+            // super()除了调用父类构造函数外,也支持调用父类的成员(字段和方法)
+            System.out.println("name:" + super.name);
+            super.load();
+        }
+    }
+
+    public static void main(String[] args) {
+        Child child = new Child();
+    }
+}
+```
 
 ### 6.4 重写与重载
 
@@ -627,7 +758,45 @@ class MyClass {
 
 - 重写:方法重写指的是在子类中重新定义(实现)与父类中同名、参数列表相同的方法。子类的重写方法应该确保具有相同的方法签名,即方法名称、参数类型和返回类型都应该相同。在 Java 中需要使用@Override 注解标识被重写的方法,该注解可以帮助编译器检查是否正确重写了父类的方法。重写是实现多态的核心机制,子类重写父类的方法提供具体实现,当调用对象是父类类型但实际引用的是子类对象时,会根据对象的实际类型来调用相应的方法,从而实现面向对象的多态特性。
 
+```java
+public class OverrideExample {
+    /**
+     * 重写是指子类重新实现父类提供的同名、参数列表(参数个数和类型)、返回值类型相同的方法。
+     * 重写Object的toString()方法,Object是Java类中所有类的基类。
+     */
+    @Override
+    public String toString() {
+        // 自定义重写逻辑...
+        return "OverrideExample";
+    }
+}
+```
+
 - 重载:方法重载指的是在同一个类中,可以定义多个方法,它们具有相同的名称但参数列表不同(方法的参数列表可以包括参数的类型、个数或顺序),允许有不同的返回值。方法重载机制提供了方法的多种使用方式,可以根据不同的参数调用相应的方法。
+
+```java
+/**
+ * 方法重载是指一个类可以包含多个方法同名,但方法参数列表(参数个数、参数类型、参数顺序)、返回值不同的方法,
+ * 例如OverloadingExample类中提供了add()多个重载方法
+ */
+public class OverloadingExample {
+    public double add(double a, double b) {
+        return a + b;
+    }
+
+    public double add(double a, double b, double c) {
+        return a + b + c;
+    }
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int add(int a, int b, int c) {
+        return a + b + c;
+    }
+}
+```
 
 ## 7.Object 类
 
@@ -635,7 +804,7 @@ Object 类是 Java 中所有类的根类。在 Java 中,每个类都直接或间
 
 ### 7.1 hashCode()
 
-hashCode()用于返回对象的哈希码(hash code),哈希码是一个整数值,用于在哈希表等数据结构中进行快速查找和比较对象。在 Object 类中,默认的 hashCode()方法实现返回对象的内存地址作为哈希码。对于自定义类通常需要根据对象的属性来重写 hashCode()方法,以保证相等的对象具有相同的哈希码
+hashCode()用于返回对象的哈希码(hash code),哈希码是一个整数值,用于在哈希表等数据结构中进行快速查找和比较对象。在 Object 类中,默认的 hashCode()方法实现返回对象的内存地址作为哈希码。对于自定义类通常需要根据对象的属性来重写 hashCode()方法,以保证相等的对象具有相同的哈希码。
 
 ### 7.2 equals()
 

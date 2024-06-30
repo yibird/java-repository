@@ -485,33 +485,40 @@ application.yml:
 
 ```yml
 spring:
-  redis:
-    host: 172.16.178.130
-    port: 6379
-    username:
-    password:
-    # jedis客户端配置,启用jedis仅需配置jedis连接池
-    #    jedis:
-    #      pool:
-    #        # jedis连接池最大连接数,默认8
-    #        max-active: 8
-    #        # jedis连接池最大空闲连接数,默认8
-    #        max-idle: 8
-    #        # jedis连接池最小空闲连接数,默认0
-    #        min-idle: 0
-    #        # jedis连接池最大等待时间(单位毫秒),默认-1ms
-    #        max-wait: -1ms
-    # lettuce客户端配置,启用lettuce仅需配置lettuce连接池,默认使用lettuce,使用lettuce需要添加commons-pool2依赖
-    lettuce:
-      pool:
-        # lettuce连接池最大连接数,默认8
-        max-active: 8
-        # lettuce连接池最大空闲连接数,默认0
-        max-idle: 0
-        # lettuce连接池最小空闲连接数,默认0
-        min-idle: 0
-        # lettuce连接池最大等待时间(单位毫秒),默认-1ms
-        max-wait: -1ms
+  data:
+    redis:
+      # redis server主机地址
+      host: 192.168.198.128
+      # redis server端口
+      port: 6379
+      # redis server username
+      username:
+      # redis server password
+      password:
+      # redis 连接超时时间
+      timeout: 5000
+      # redis lettuce客户端配置,使用lettuce需要添加commons-pool2依赖,lettuce连接池基于commons-pool2
+      lettuce:
+        # lettuce 连接池配置
+        pool:
+          # lettuce连接池最大连接数,默认8
+          max-active: 8
+          # lettuce连接池最大空闲连接数,默认0
+          max-idle: 0
+          # lettuce连接池最小空闲连接数,默认0
+          min-idle: 0
+          # # lettuce连接池最大等待时间(单位毫秒),默认-1ms
+          max-wait: -1
+#      jedis:
+#        pool:
+#          # pool连接池最大连接数,默认8
+#          max-active: 8
+#          # pool连接池最大空闲连接数,默认0
+#          max-idle: 0
+#          # pool连接池最小空闲连接数,默认0
+#          min-idle: 0
+#          # pool连接池最大等待时间(单位毫秒),默认-1ms
+#          max-wait: -1
 ```
 
 ### 4.1 RedisTemplate 方法

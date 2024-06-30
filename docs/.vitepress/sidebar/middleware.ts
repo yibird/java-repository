@@ -168,5 +168,9 @@ export default {
         },
       ],
     },
+    {
+      text: "Keepalived",
+      collapsed: true,
+    },
   ],
 };

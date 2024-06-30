@@ -1,31 +1,33 @@
-import type { Sidebar } from "../typing";
-import Base from "./base";
-import Concurrency from "./concurrency";
-import Feature from "./feature";
-import SpringFramework from "./springFramework";
-import ORM from "./orm";
-import Middleware from "./middleware";
-import Microservices from "./microservices";
-import DB from "./db";
-import DesignPatterns from "./designPatterns";
-import SystemsDesign from "./systemsDesign";
-import Containerization from "./containerization";
-import RefactorAndOptimize from "./refactorAndOptimize";
-import CaseInterview from "./caseInterview";
+import type { Sidebar } from '../typing';
+import base from './base';
+import concurrency from './concurrency';
+import feature from './feature';
+import springFramework from './springFramework';
+import orm from './orm';
+import middleware from './middleware';
+import microservices from './microservices';
+import database from './db';
+import DesignPatterns from './designPatterns';
+import businessFunctions from './businessFunctions';
+import systemsDesign from './systemsDesign';
+import containerization from './containerization';
+import refactorAndOptimize from './refactorAndOptimize';
+import caseInterview from './caseInterview';
 
 const sidebars: Sidebar = [
-  Base,
-  Concurrency,
-  Feature,
-  ORM,
-  SpringFramework,
-  Middleware,
-  Microservices,
-  DB,
+  base,
+  concurrency,
+  feature,
+  orm,
+  springFramework,
+  middleware,
+  microservices,
+  database,
   DesignPatterns,
-  SystemsDesign,
-  Containerization,
-  RefactorAndOptimize,
-  CaseInterview,
+  businessFunctions,
+  systemsDesign,
+  containerization,
+  refactorAndOptimize,
+  caseInterview,
 ];
 export default sidebars;
