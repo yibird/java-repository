@@ -2,12 +2,14 @@ import type { Sidebar } from '../typing';
 import base from './base';
 import concurrency from './concurrency';
 import feature from './feature';
+import jvm from './jvm';
 import springFramework from './springFramework';
 import orm from './orm';
 import middleware from './middleware';
 import microservices from './microservices';
 import database from './db';
-import DesignPatterns from './designPatterns';
+import dataStructureAndAlgorithms from './dataStructure&algorithms';
+import designPatterns from './designPatterns';
 import businessFunctions from './businessFunctions';
 import systemsDesign from './systemsDesign';
 import containerization from './containerization';
@@ -18,12 +20,14 @@ const sidebars: Sidebar = [
   base,
   concurrency,
   feature,
+  jvm,
+  database,
+  dataStructureAndAlgorithms,
+  designPatterns,
   orm,
   springFramework,
   middleware,
   microservices,
-  database,
-  DesignPatterns,
   businessFunctions,
   systemsDesign,
   containerization,

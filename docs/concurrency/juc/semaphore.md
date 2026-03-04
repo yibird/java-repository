@@ -18,12 +18,12 @@ public Semaphore(int permits, boolean fair);
 
 Semaphore 的方法如下:
 
-- acquire()：尝试获取一个许可证，如果许可证用尽，则阻塞等待。
-- acquire(int permits)：尝试获取指定数量的许可证，如果许可证不足，则阻塞等待。
-- release()：释放一个许可证,将可用许可证的数量增加一个。如果任何线程正在尝试获取许可证，则会选择一个线程并授予刚刚发布的许可证。为了线程调度的目的,该线程被(重新)启用。
-- release(int permits)：释放指定数量的许可证。
-- tryAcquire()：尝试获取一个许可证，如果许可证用尽，返回 false，不阻塞等待。
-- tryAcquire(int permits)：尝试获取指定数量的许可证，如果许可证不足，返回 false，不阻塞等待。
+- acquire():尝试获取一个许可证,如果许可证用尽,则阻塞等待。
+- acquire(int permits):尝试获取指定数量的许可证,如果许可证不足,则阻塞等待。
+- release():释放一个许可证,将可用许可证的数量增加一个。如果任何线程正在尝试获取许可证,则会选择一个线程并授予刚刚发布的许可证。为了线程调度的目的,该线程被(重新)启用。
+- release(int permits):释放指定数量的许可证。
+- tryAcquire():尝试获取一个许可证,如果许可证用尽,返回 false,不阻塞等待。
+- tryAcquire(int permits):尝试获取指定数量的许可证,如果许可证不足,返回 false,不阻塞等待。
 
 ### 使用 Semaphore 模拟停车场停车
 

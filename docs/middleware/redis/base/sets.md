@@ -17,7 +17,7 @@ set 常用于命令如下:
 |SDIFF key [key ...]|返回一个或多个 set 的差集|O(n),其中 n 是所有给定集合中的元素总数|
 |SDIFFSTORE destination key [key ...]|此命令与 SDIFF 命令类似,但不会返回差集,而是将差集存储到 destination 集合中|O(n),其中 n 是所有给定集合中的元素总数|
 |SINTER key [key ...]|返回一个或多个 set 的交集|最坏情况为 O(N\*M),其中 N 是最小集合的基数,M 是集合的数量。|
-|SINTERCARD numkeys key [key ...] [LIMIT limit]|此命令类似于 SINTER,但它不返回结果集,而只返回结果的基数。返回集合的基数,该基数将由所有给定集合的交集产生。|O（N\*M） 最坏情况,其中 N 是最小集合的基数,M 是集合数。|
+|SINTERCARD numkeys key [key ...] [LIMIT limit]|此命令类似于 SINTER,但它不返回结果集,而只返回结果的基数。返回集合的基数,该基数将由所有给定集合的交集产生。|O(N\*M) 最坏情况,其中 N 是最小集合的基数,M 是集合数。|
 |SINTERSTORE destination key [key ...]|此命令与 SINTER 命令类似,但不会返回交集,而是将交集存储到 destination 集合中|O(n),其中 n 是所有给定集合中的元素总数|
 |SISMEMBER key member|判断 member 是否是 set 集合中(key)的成员,是则返回 1,否则返回 0|O(1)|
 |SMEMBERS key|返回指定 set 集合中所有成员|O(n),n 表示 set 集合中所有成员的数量|

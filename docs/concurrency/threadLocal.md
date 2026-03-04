@@ -159,11 +159,11 @@ ThreadLocal 在跨方法数据传递的场景有很多,例如:
 ```javascript
 // 省略import
 public class SessionHolder{
-    // session id，线程本地变量
+    // session id,线程本地变量
     private static final ThreadLocal<String> sidLocal =new ThreadLocal<>("sidLocal");
-    // 用户信息，线程本地变量
+    // 用户信息,线程本地变量
     private static final ThreadLocal<UserDTO> sessionUserLocal =new ThreadLocal<>("sessionUserLocal");
-    // session，线程本地变量
+    // session,线程本地变量
     private static final ThreadLocal<HttpSession> sessionLocal =new ThreadLocal<>("sessionLocal");
     // 省略其他
     /** 保存session在线程本地变量中*/

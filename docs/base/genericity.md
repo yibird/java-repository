@@ -301,7 +301,7 @@ Signature: #23                          // <T:Ljava/lang/Object;>Ljava/lang/Obje
 SourceFile: "Book.java"
 ```
 
-从反编译结果来看,经过编译后的泛型参数会进行类型擦除,泛型参数类型会使用 Object 类型进行替换。Ljava/lang/Object 是在 Java 字节码中表示 java.lang.Object 类的描述符。在 Java 字节码中,类和接口的描述符用字符串表示,以 L 开头,以 ; 结尾，中间是完整的类或接口的二进制名称(包括包路径,用 / 分隔)。
+从反编译结果来看,经过编译后的泛型参数会进行类型擦除,泛型参数类型会使用 Object 类型进行替换。Ljava/lang/Object 是在 Java 字节码中表示 java.lang.Object 类的描述符。在 Java 字节码中,类和接口的描述符用字符串表示,以 L 开头,以 ; 结尾,中间是完整的类或接口的二进制名称(包括包路径,用 / 分隔)。
 
 ### 3.2 类型擦除的局限性
 

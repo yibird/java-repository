@@ -19,14 +19,33 @@ export default {
           link: '/db/mysql/sql.md',
         },
         {
-          text: '事务',
-          link: '/db/mysql/transation.md',
+          text: 'InnoDB存储结构',
+          link: '/db/mysql/innoDBStructure.md',
         },
         {
           text: '索引',
           link: '/db/mysql/index.md',
         },
-
+        {
+          text: '事务',
+          link: '/db/mysql/transation.md',
+        },
+        {
+          text: '锁机制',
+          link: '/db/mysql/lock.md',
+        },
+        {
+          text: 'MVCC',
+          link: '/db/mysql/mvcc.md',
+        },
+        {
+          text: 'rodo undo日志',
+          link: '/db/mysql/rodoAndUndo.md',
+        },
+        {
+          text: '高可用',
+          link: '/db/mysql/highAvailability.md',
+        },
         {
           text: 'MySQL优化',
           collapsed: true,
@@ -40,18 +59,6 @@ export default {
               link: '/db/mysql/sqlOptimize.md',
             },
           ],
-        },
-        {
-          text: '锁机制',
-          link: '/db/mysql/lock.md',
-        },
-        {
-          text: 'rodo undo日志',
-          link: '/db/mysql/rodoAndUndo.md',
-        },
-        {
-          text: '高可用',
-          link: '/db/mysql/highAvailability.md',
         },
       ],
     },

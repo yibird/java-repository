@@ -11,7 +11,7 @@
 在 Java 中注解可分为内置注解、元注解、自定义注解三种:
 
 - 内置注解:内置注解表示 Java 自带的标准注解,包括`@Override`、`@Deprecated`和`@SuppressWarnings`,分别用于标明重写某个方法、标明某个类或方法过时、标明要忽略的警告,用这些注解标明后编译器就会进行检查。
-- 元注解:元注解是用于定义注解的注解,包括`@Retention`、`@Target`、`@Inherited`、`@Documented`，`@Retention`用于标明注解被保留的阶段，@Target 用于标明注解使用的范围，@Inherited 用于标明注解可继承，@Documented 用于标明是否生成 javadoc 文档。
+- 元注解:元注解是用于定义注解的注解,包括`@Retention`、`@Target`、`@Inherited`、`@Documented`,`@Retention`用于标明注解被保留的阶段,@Target 用于标明注解使用的范围,@Inherited 用于标明注解可继承,@Documented 用于标明是否生成 javadoc 文档。
 - 自定义注解:可以根据自己的需求定义注解,并可用元注解对自定义注解进行注解。
 
 ### 1.1 内置注解

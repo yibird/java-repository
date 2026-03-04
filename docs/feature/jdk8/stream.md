@@ -512,7 +512,7 @@ Stream<String> stream2 = Stream.of("apple", "orange", "banana", "apple");
  * 相同的元素将被分到一组。
  * - classifier表示生成Map Key的函数。它接受流中的元素 T,返回一个键类型 K。根据该函数的结果,
  * 将元素分组到相应的组中。
- * - downstream：下游收集器,用于收集每个组中的元素。它是一个 Collector 类型的参数,
+ * - downstream:下游收集器,用于收集每个组中的元素。它是一个 Collector 类型的参数,
  * 其中 T 是流中元素的类型,A是中间结果容器的类型,D是最终结果的类型。
  */
 Map<String, List<String>> map = stream3.collect(Collectors.groupingBy(k -> k + "_key", Collectors.toList()));

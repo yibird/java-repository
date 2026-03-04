@@ -186,7 +186,7 @@ mysql> SHOW STATUS LIKE 'slow_queries';
 
 除了设置慢查询配置外,MySQL 内置了 mysqldumpslow 用于解析 MySQL 慢查询日志文件并归并慢日志信息,mysqldumpslow 可以分析日志、查找、分析 SQL。mysqldumpslow 参数如下:
 
-- -a: 不将数字抽象成 N,字符串抽象成 S -s: 是表示按照何种方式排序：
+- -a: 不将数字抽象成 N,字符串抽象成 S -s: 是表示按照何种方式排序:
   - c: 访问次数。
   - l: 锁定时间。
   - r: 返回记录。

@@ -1,9 +1,9 @@
-Java 中的集合(Collection)是一组对象的容器，用于存储、检索和操作数据。Java 在`java.util`包下提供了一系列的集合类和接口,用于处理不同类型的数据结构。常见的 Java 集合接口如下:
+Java 中的集合(Collection)是一组对象的容器,用于存储、检索和操作数据。Java 在`java.util`包下提供了一系列的集合类和接口,用于处理不同类型的数据结构。常见的 Java 集合接口如下:
 
 - **Collection 接口**:表示一组对象,是其他集合接口的基础接口。List、Set 和 Queue 接口都继承自 Collection 接口。
 - **List 接口**:有序的集合,允许重复元素。常见的实现类有 ArrayList、LinkedList 和 Vector。
 - **Set 接口**:不允许重复元素的集合。常见的实现类有 HashSet、LinkedHashSet 和 TreeSet。
-- **Queue 接口**:代表一组等待处理的元素，通常按照先进先出（FIFO）的顺序进行操作。常见的实现类有 LinkedList 和 PriorityQueue。
+- **Queue 接口**:代表一组等待处理的元素,通常按照先进先出(FIFO)的顺序进行操作。常见的实现类有 LinkedList 和 PriorityQueue。
 - **Map 接口**:存储键值对的集合,每个键关联一个值。常见的实现类有 HashMap、LinkedHashMap、TreeMap 和 HashTable。
 
 Java 基于集合接口提供了对应的集合实现,常见的容器包括:

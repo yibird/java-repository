@@ -192,7 +192,7 @@ JVM 指令说明如下:
 - iconst_1:将第二个 int 类型的推到栈顶。
 - iadd:将栈顶两 int 型数值相加并将结果压入栈顶。静态变量和局部变量的自增指令也所有不同。
 - invokestatic:指令用于调用命名类中的类方法(static 方法)。这是静态绑定的。
-- putfield:访问类实例字段(非 static 字段，或者称为实例变量)的指令。
+- putfield:访问类实例字段(非 static 字段,或者称为实例变量)的指令。
 - aload_1:将局部方法的第二个变量压入操作数栈。
 - pop:将栈顶的 1 个 slot 数值出栈。
 - return:方法返回指令方法调用结束前,需要进行返回。方法的返回值类型不同指令也有所不同,void 对应 return,int、boolean、byte、char、short 类型对应 ireturn 指令,long 类型对应 lreturn 指令,float 类型对应 freturn 指令,double 类型对应 dreturn 指令,引用类型(reference)对应 areturn 指令。

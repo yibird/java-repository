@@ -70,48 +70,48 @@ public class HelloServer {
                      * - SocketChannel:用于 TCP 网络套接字的 Channel 实现。
                      * 它提供了对 TCP 连接的读取和写入操作,以及对连接状态的管理。
                      * - ServerChannel:用于监听传入连接的 Channel 实现。
-                     * 它可以接受传入的连接请求，并创建相应的 SocketChannel 用于处理这些连接。
-                     * - UdtChannel:用于支持 UDT（User Datagram Protocol for Transactions）
+                     * 它可以接受传入的连接请求,并创建相应的 SocketChannel 用于处理这些连接。
+                     * - UdtChannel:用于支持 UDT(User Datagram Protocol for Transactions)
                      * 协议的通信。UDT 是一种可靠的、高性能的数据传输协议,特别适用于对传输延迟
                      * 和可靠性有严格要求的应用。
                      * - DatagramChannel:用于 UDP 数据报套接字的 Channel 实现。
-                     * 它提供了对 UDP 数据包的读取和写入操作，以及对多播和广播的支持。
+                     * 它提供了对 UDP 数据包的读取和写入操作,以及对多播和广播的支持。
                      *
                      * 其中SocketChannel接口的具体实现如下:
                      * - NioServerSocketChannel:基于 Java NIO 的 SocketChannel 实现,适用于 TCP 网络套接字。
                      * - OioSocketChannel:基于传统的阻塞 I/O 的 SocketChannel 实现,适用于旧版的 I/O 模型。
-                     * - EpollSocketChannel:基于 Linux Epoll 的 SocketChannel 实现，
+                     * - EpollSocketChannel:基于 Linux Epoll 的 SocketChannel 实现,
                      * 适用于 TCP 网络套接字。它提供了更高的性能和可伸缩性
                      */
                     .channel(NioServerSocketChannel.class)
                     /**
                      * handler()用于向 ChannelPipeline 末尾添加一个新的 ChannelHandler。
-                     * ChannelHandler 是 Netty 中的处理器，用于实现具体的业务逻辑和数据处理。
-                     * 它可以处理不同类型的事件，如连接建立、数据读取、数据写入等，并进行相应的操作和响应。
-                     * 通过添加不同的 ChannelHandler，可以实现各种功能，如数据解码、数据编码、
+                     * ChannelHandler 是 Netty 中的处理器,用于实现具体的业务逻辑和数据处理。
+                     * 它可以处理不同类型的事件,如连接建立、数据读取、数据写入等,并进行相应的操作和响应。
+                     * 通过添加不同的 ChannelHandler,可以实现各种功能,如数据解码、数据编码、
                      * 业务逻辑处理、错误处理、日志记录等。
                      *
-                     * ChannelPipeline 是 Netty 中的一个重要概念，它由一系列的 ChannelHandler
-                     * 组成，用于处理传入和传出的数据、事件和状态变化。在ChannelPipeline中
-                     * ChannelHandler被组织成一个处理链，用于对Channel的数据流进行处理。
-                     * 当一个事件或数据通过ChannelPipeline传递时，会被依次经过各个ChannelHandler进行处理和转换。
+                     * ChannelPipeline 是 Netty 中的一个重要概念,它由一系列的 ChannelHandler
+                     * 组成,用于处理传入和传出的数据、事件和状态变化。在ChannelPipeline中
+                     * ChannelHandler被组织成一个处理链,用于对Channel的数据流进行处理。
+                     * 当一个事件或数据通过ChannelPipeline传递时,会被依次经过各个ChannelHandler进行处理和转换。
                      */
                     .handler(new LoggingHandler(LogLevel.INFO))
                     /**
                      * childHandler() 方法是用于向 ServerChannel 的 ChildChannelPipeline 末尾
-                     * 添加一个新的 ChannelHandler。在 Netty 的服务器端，通常会有一个
-                     * ServerChannel 负责监听和接受客户端的连接请求。一旦有新的连接建立，
-                     * ServerChannel 会创建一个对应的子 Channel，即 ChildChannel。ChildChannel
-                     * 用于处理与客户端之间的具体通信，包括数据的读写和事件的处理。
-                     * 与 handler() 方法不同，childHandler() 方法是针对每个新连接的子 Channel 进行处理，
-                     * 而不是整个 ChannelPipeline。每个新连接都会有自己独立的 ChildChannelPipeline，
+                     * 添加一个新的 ChannelHandler。在 Netty 的服务器端,通常会有一个
+                     * ServerChannel 负责监听和接受客户端的连接请求。一旦有新的连接建立,
+                     * ServerChannel 会创建一个对应的子 Channel,即 ChildChannel。ChildChannel
+                     * 用于处理与客户端之间的具体通信,包括数据的读写和事件的处理。
+                     * 与 handler() 方法不同,childHandler() 方法是针对每个新连接的子 Channel 进行处理,
+                     * 而不是整个 ChannelPipeline。每个新连接都会有自己独立的 ChildChannelPipeline,
                      * 并且可以根据需要定制不同的数据处理逻辑。
                      *
-                     * ChannelInitializer 是 Netty 中的一个特殊的 ChannelHandler，用于在 Channel 被注册到 EventLoop
+                     * ChannelInitializer 是 Netty 中的一个特殊的 ChannelHandler,用于在 Channel 被注册到 EventLoop
                      * 后,对 Channel 进行初始化和配置。ChannelInitializer支持在Channel 注册后自定义配置 ChannelPipeline,
                      * 添加一系列的 ChannelHandler 来处理传入和传出的数据、事件和状态变化。ChannelInitializer抽象类提供了
                      * initChannel()方法用于自定义的 Channel 初始化逻辑,在initChannel方法中可以向 ChannelPipeline
-                     * 添加各种 ChannelHandler，并配置它们的顺序和参数。
+                     * 添加各种 ChannelHandler,并配置它们的顺序和参数。
                      */
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         /**
@@ -151,7 +151,7 @@ public class HelloServer {
              * - shutdownGracefully():用于优雅地关闭 Netty 的 EventLoopGroup,
              * shutdownGracefully()会等待所有正在处理的任务完成后再关闭 EventLoopGroup,而
              * - shutdownNow():用于立即关闭 Netty 的 EventLoopGroup,shutdownNow()并不会
-             * 等待正在处理的任务完成。它会强制停止所有的线程，并丢弃尚未完成的任务。
+             * 等待正在处理的任务完成。它会强制停止所有的线程,并丢弃尚未完成的任务。
              * 除此之外,Netty还提供了isShutdown()、isShuttingDown()判断EventLoopGroup是否被终结。
              */
             bossGroup.shutdownGracefully();

@@ -66,7 +66,7 @@ implements List<E>, RandomAccess, Cloneable, java.io.Serializable
     }
 
     /**
-     * 按照集合迭代器返回的顺序，构造一个包含指定集合的元素的列表。
+     * 按照集合迭代器返回的顺序,构造一个包含指定集合的元素的列表。
      *
      * @param c the collection whose elements are to be placed into this list
      * @throws NullPointerException if the specified collection is null
@@ -122,10 +122,10 @@ public void clear() {
 ## 2.ArrayList 最佳实践
 
 - 初始化 ArrayList 时,应尽量指定初始化容量,这样做可以避免在插入元素时因重新分配内存而导致的性能下降。如果初始化 ArrayList 时不指定初始化容量(默认容量为 10),当频繁添加元素时,会导致容量不足触发扩容机制,由于 ArrayList 进行扩容时会拷贝原数组,这个过程不仅耗时久,而且会消耗大量内存。
-- 在需要添加大量元素时,可以使用 list.ensureCapacity(int minCapacity)方法来提前分配足够的内存空间，以避免多次重新分配内存。
-- 当不再需要使用 ArrayList 中的元素时，及时进行清理。可以使用 list.clear() 方法将 ArrayList 的元素全部移除，并释放占用的内存空间。
-- 避免频繁地在 ArrayList 中进行元素的插入或删除操作。ArrayList 在进行插入或删除操作时，可能需要执行大量的元素移动操作，这种操作会消耗较多的时间。如果对 ArrayList 的操作主要涉及到元素的插入或删除，考虑使用 LinkedList 等更适合这类操作的数据结构。
-- 使用迭代器(Iterator)遍历 ArrayList，而不是使用普通的 for 循环或者 foreach 循环。迭代器提供了一种安全、高效的方式来遍历 ArrayList，并且可以在遍历过程中进行元素的删除操作
+- 在需要添加大量元素时,可以使用 list.ensureCapacity(int minCapacity)方法来提前分配足够的内存空间,以避免多次重新分配内存。
+- 当不再需要使用 ArrayList 中的元素时,及时进行清理。可以使用 list.clear() 方法将 ArrayList 的元素全部移除,并释放占用的内存空间。
+- 避免频繁地在 ArrayList 中进行元素的插入或删除操作。ArrayList 在进行插入或删除操作时,可能需要执行大量的元素移动操作,这种操作会消耗较多的时间。如果对 ArrayList 的操作主要涉及到元素的插入或删除,考虑使用 LinkedList 等更适合这类操作的数据结构。
+- 使用迭代器(Iterator)遍历 ArrayList,而不是使用普通的 for 循环或者 foreach 循环。迭代器提供了一种安全、高效的方式来遍历 ArrayList,并且可以在遍历过程中进行元素的删除操作
 - 在需要频繁判断元素是否存在于 ArrayList 中时,可以考虑使用 HashSet 或 TreeSet 等更适合快速查找元素的数据结构。
 - 考虑使用泛型来限制 ArrayList 中存储的元素类型。这样可以在编译时捕获一些类型错误,并提高代码的可读性和维护性,例如:`ArrayList<String> list = new ArrayList<>()`;
 - 由于 ArrayList 是非线程安全的,因此在多线程环境下使用 ArrayList 时,要确保对 ArrayList 的并发访问进行正确的同步处理:

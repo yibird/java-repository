@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "一个非常全面的Java知识库,涵盖Java基础、并发线程、网络编程、分布式微服务、设计模式、中间件、源码分析、代码重构与优化等内容",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vitepress dev docs",
@@ -14,6 +15,6 @@
   "license": "ISC",
   "devDependencies": {
     "typescript": "^4.7.2",
-    "vitepress": "^1.0.0-alpha.75"
+    "vitepress": "^1.6.4"
   }
 }

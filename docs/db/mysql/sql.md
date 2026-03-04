@@ -33,7 +33,7 @@ DROP DATABASE IF EXISTS db1;
 # 创建表语法,ENGINE = INNODB表示指定表使用INNODB作为存储引擎(默认引擎为INNODB),
 # CHARACTER SET utf8mb4表示设置utf8mb4字符集,COLLATE utf8mb4_general_ci 表示使用
 # case-insensitive(不区分大小写)的排序规则,row_format = dynamic表示设置表的行格式,
-# dynamic支持大字段和变长字段，允许行的长度变化,COMMENT用于设置表注释
+# dynamic支持大字段和变长字段,允许行的长度变化,COMMENT用于设置表注释
 CREATE TABLE [IF NOT EXISTS] table_name (
     column1 datatype [optional_constraints],
     column2 datatype [optional_constraints],

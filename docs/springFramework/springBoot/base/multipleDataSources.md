@@ -8,31 +8,31 @@
 
 ## SpringBoot 多数据源类图
 
-- **DataSource**:DataSource 是`javax.sql`包下的一个接口,用于连接到此 DataSource 对象所表示的物理数据源的工厂。DataSource 是 DriverManager 功能的替代方案,是获取连接的首选方式。实现 DataSource 接口的对象通常将注册到基于 Java 命名和目录（JNDI）API 的命名服务。DataSource 接口由驱动程序供应商实现。有三种类型的实现：
+- **DataSource**:DataSource 是`javax.sql`包下的一个接口,用于连接到此 DataSource 对象所表示的物理数据源的工厂。DataSource 是 DriverManager 功能的替代方案,是获取连接的首选方式。实现 DataSource 接口的对象通常将注册到基于 Java 命名和目录(JNDI)API 的命名服务。DataSource 接口由驱动程序供应商实现。有三种类型的实现:
 
   - 基本实现:生成一个标准 Connection 对象。
-  - 连接池实现:生成一个 Connection 对象，该对象将自动参与连接池。此实现与中间层连接池管理器一起工作。
-  - 分布式事务实现:生成一个 Connection 对象,该对象可以用于分布式事务，并且几乎总是参与连接池。此实现与中间层事务管理器一起工作，并且几乎总是与连接池管理器一起使用。
+  - 连接池实现:生成一个 Connection 对象,该对象将自动参与连接池。此实现与中间层连接池管理器一起工作。
+  - 分布式事务实现:生成一个 Connection 对象,该对象可以用于分布式事务,并且几乎总是参与连接池。此实现与中间层事务管理器一起工作,并且几乎总是与连接池管理器一起使用。
 
 - **AbstractDataSource**:DataSource 实现的抽象基类,负责填充。此类上下文中的 Padding 表示 DataSource 接口中某些方法的默认实现,如 getLoginTimeout()、setLoginTimeout(int)等。
-- **AbstractRoutingDataSource**:一个抽象类,位于`spring-jdbc`jar 包下(主流的 ORM 框架与 SpringBoot 启动器都使用了 spring-jdbc 模块,例如 Mybatis、Mybatisplus、SpringJPA 等等),该抽象类继承自 AbstractDataSource,间接实现了 DataSource 接口,用于在运行时根据查找键动态确定目标数据源（数据库）的方式,适用于在有多个数据库的情况下根据特定条件在它们之间进行切换。继承 AbstractRoutingDataSource 必须要重写 determineCurrentLookupKey()方法(高版本是重写 determineCurrentLookupKey,低版本是重写 determineDataSource),该方法用于动态确定当前使用的数据源的查找键(lookup key)。AbstractRoutingDataSource 的执行时机确切地取决于应用程序中访问数据库的时机,当通过数据源执行实际的数据库操作时,会调用 determineCurrentLookupKey()选择对应数据源。
+- **AbstractRoutingDataSource**:一个抽象类,位于`spring-jdbc`jar 包下(主流的 ORM 框架与 SpringBoot 启动器都使用了 spring-jdbc 模块,例如 Mybatis、Mybatisplus、SpringJPA 等等),该抽象类继承自 AbstractDataSource,间接实现了 DataSource 接口,用于在运行时根据查找键动态确定目标数据源(数据库)的方式,适用于在有多个数据库的情况下根据特定条件在它们之间进行切换。继承 AbstractRoutingDataSource 必须要重写 determineCurrentLookupKey()方法(高版本是重写 determineCurrentLookupKey,低版本是重写 determineDataSource),该方法用于动态确定当前使用的数据源的查找键(lookup key)。AbstractRoutingDataSource 的执行时机确切地取决于应用程序中访问数据库的时机,当通过数据源执行实际的数据库操作时,会调用 determineCurrentLookupKey()选择对应数据源。
 
 ## dynamic-datasource 多数据源组件
 
 dynamic-datasource 是一个多数据源切换组件,具有如下特性:
 
-- 支持 数据源分组 ，适用于多种场景 纯粹多库 读写分离 一主多从 混合模式。
+- 支持 数据源分组 ,适用于多种场景 纯粹多库 读写分离 一主多从 混合模式。
 - 支持数据库敏感配置信息 加密 ENC()。
 - 支持每个数据库独立初始化表结构 schema 和数据库 database。
-- 支持无数据源启动，支持懒加载数据源（需要的时候再创建连接）。
-- 支持 自定义注解 ，需继承 DS(3.2.0+)。
-- 提供并简化对 Druid，HikariCp，BeeCp，Dbcp2 的快速集成。
-- 提供对 Mybatis-Plus，Quartz，ShardingJdbc，P6sy，Jndi 等组件的集成方案。
-- 提供 自定义数据源来源 方案（如全从数据库加载）。
+- 支持无数据源启动,支持懒加载数据源(需要的时候再创建连接)。
+- 支持 自定义注解 ,需继承 DS(3.2.0+)。
+- 提供并简化对 Druid,HikariCp,BeeCp,Dbcp2 的快速集成。
+- 提供对 Mybatis-Plus,Quartz,ShardingJdbc,P6sy,Jndi 等组件的集成方案。
+- 提供 自定义数据源来源 方案(如全从数据库加载)。
 - 提供项目启动后 动态增加移除数据源 方案。
 - 提供 Mybatis 环境下的 纯读写分离 方案。
-- 提供使用 spel 动态参数 解析数据源方案。内置 spel，session，header，支持自定义。
-- 支持 多层数据源嵌套切换 。（ServiceA >>> ServiceB >>> ServiceC）。
+- 提供使用 spel 动态参数 解析数据源方案。内置 spel,session,header,支持自定义。
+- 支持 多层数据源嵌套切换 。(ServiceA >>> ServiceB >>> ServiceC)。
 - 提供 基于 seata 的分布式事务方案。
 - 提供 本地多数据源事务方案。
 
@@ -257,7 +257,7 @@ public class DynamicDataSourceAutoConfiguration implements InitializingBean {
 - **@AutoConfigureBefore**: 该注解是 Spring Boot 中用于控制自动配置类加载顺序的注解。通过使用这个注解,可以明确指定某个自动配置类应该在另一个之前被加载。为了防止和 SpringBoot 默认的启动器 DataSourceAutoConfiguration 和 Druid 自动配置类(DruidDataSourceAutoConfigure)产生冲突,设置该配置要在其自动配置之前进行配置。
 - **@Import**:该注解是 Spring 中的一个配置注解,它用于将一个或多个配置类导入到当前配置类中,以便共享其中定义的 Bean 或其他配置信息。DynamicDataSourceAutoConfiguration 使用@Import 导入了 DruidDynamicDataSourceConfiguration、DynamicDataSourceCreatorAutoConfiguration、DynamicDataSourceAopConfiguration、DynamicDataSourceAssistConfiguration 四个类,其作用如下:
   - **DruidDynamicDataSourceConfiguration**:Druid 动态数据源配置类,复用 Druid 的自动配置。
-  - **DynamicDataSourceCreatorAutoConfiguration**:该配置类用于向容器注入 DataSource 创建器(DataSourceCreator)的 bean,提供 7 种创建器(JNDI、Druid，Hikari、BeeCp、Dbcp2、Atomikos、基础,Bean 的加载顺序从左到右)。DataSourceCreator 是一个接口,提供了用于根据 DataSourceProperty 创建 DataSource 的方法。
+  - **DynamicDataSourceCreatorAutoConfiguration**:该配置类用于向容器注入 DataSource 创建器(DataSourceCreator)的 bean,提供 7 种创建器(JNDI、Druid,Hikari、BeeCp、Dbcp2、Atomikos、基础,Bean 的加载顺序从左到右)。DataSourceCreator 是一个接口,提供了用于根据 DataSourceProperty 创建 DataSource 的方法。
   - **DynamicDataSourceAopConfiguration**:动态数据源核心自动配置类。
   - **DynamicDataSourceAssistConfiguration**:动态数据源核心自动配置类。
 - **@ConditionalOnProperty**:根据属性值注入 Bean,@ConditionalOnProperty(prefix = DynamicDataSourceProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)表示配置`spring.datasource.dynamic.enable=false`来关闭动态数据源配置。
@@ -268,7 +268,7 @@ public class DynamicDataSourceAutoConfiguration implements InitializingBean {
 
 ```java
 /**
- * 多数据源加载接口，默认的实现为从yml信息中加载所有数据源 你可以自己实现从其他地方加载所有数据源
+ * 多数据源加载接口,默认的实现为从yml信息中加载所有数据源 你可以自己实现从其他地方加载所有数据源
  *
  * @author TaoYu Kanyuxia
  * @since 1.0.0
@@ -278,13 +278,13 @@ public interface DynamicDataSourceProvider {
     /**
      * 加载所有数据源
      *
-     * @return 所有数据源，key为数据源名称
+     * @return 所有数据源,key为数据源名称
      */
     Map<String, DataSource> loadDataSources();
 }
 ```
 
-- **Advisor(通知器)**:在 Spring AOP 中,Advisor（通知器）是一种对象，用于将切面逻辑（通知）与切点（连接点的匹配条件）关联起来。Advisor 封装了切面的信息，并告诉 Spring 在什么时候以及在哪里执行切面逻辑。在 DynamicDataSourceAopConfiguration 中定义了两种 Advisor,分别用于处理`@DS` 和`@DSTransactional` 注解,`@DS` 是数据源的核心注解,`@DSTransactional` 用于处理数据源的事务问题,其源码如下:
+- **Advisor(通知器)**:在 Spring AOP 中,Advisor(通知器)是一种对象,用于将切面逻辑(通知)与切点(连接点的匹配条件)关联起来。Advisor 封装了切面的信息,并告诉 Spring 在什么时候以及在哪里执行切面逻辑。在 DynamicDataSourceAopConfiguration 中定义了两种 Advisor,分别用于处理`@DS` 和`@DSTransactional` 注解,`@DS` 是数据源的核心注解,`@DSTransactional` 用于处理数据源的事务问题,其源码如下:
 
 ```java
 // 使用DynamicDataSourceAnnotationInterceptor拦截器处理DynamicDataSourceAnnotationAdvisor通知器,当访问@DS注解时会触发DynamicDataSourceAnnotationInterceptor中的invoke()
@@ -372,9 +372,9 @@ public final class DynamicDataSourceContextHolder {
     /**
      * 为什么要用链表存储(准确的是栈)
      * <pre>
-     * 为了支持嵌套切换，如ABC三个service都是不同的数据源
-     * 其中A的某个业务要调B的方法，B的方法需要调用C的方法。一级一级调用切换，形成了链。
-     * 传统的只设置当前线程的方式不能满足此业务需求，必须使用栈，后进先出。
+     * 为了支持嵌套切换,如ABC三个service都是不同的数据源
+     * 其中A的某个业务要调B的方法,B的方法需要调用C的方法。一级一级调用切换,形成了链。
+     * 传统的只设置当前线程的方式不能满足此业务需求,必须使用栈,后进先出。
      * </pre>
      */
     private static final ThreadLocal<Deque<String>> LOOKUP_KEY_HOLDER = new NamedThreadLocal<Deque<String>>("dynamic-datasource") {
@@ -399,7 +399,7 @@ public final class DynamicDataSourceContextHolder {
     /**
      * 设置当前线程数据源
      * <p>
-     * 如非必要不要手动调用，调用后确保最终清除
+     * 如非必要不要手动调用,调用后确保最终清除
      * </p>
      *
      * @param ds 数据源名称
@@ -428,7 +428,7 @@ public final class DynamicDataSourceContextHolder {
     /**
      * 强制清空本地线程
      * <p>
-     * 防止内存泄漏，如手动调用了push可调用此方法确保清除
+     * 防止内存泄漏,如手动调用了push可调用此方法确保清除
      * </p>
      */
     public static void clear() {
